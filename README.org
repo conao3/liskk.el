@@ -1,0 +1,89 @@
+#+author: conao3
+#+date: <2019-06-07 Fri>
+
+[[https://github.com/conao3/liskk.el][https://raw.githubusercontent.com/conao3/files/master/blob/headers/png/liskk.el.png]]
+[[https://github.com/conao3/liskk.el/blob/master/LICENSE][https://img.shields.io/github/license/conao3/liskk.el.svg?style=flat-square]]
+[[https://github.com/conao3/liskk.el/releases][https://img.shields.io/github/tag/conao3/liskk.el.svg?style=flat-square]]
+[[https://travis-ci.org/conao3/liskk.el][https://img.shields.io/travis/conao3/liskk.el/master.svg?style=flat-square]]
+[[https://app.codacy.com/project/conao3/liskk.el/dashboard][https://img.shields.io/codacy/grade/1a6befcbdfdb4b1fb37a6f7f040a75b2.svg?logo=codacy&style=flat-square]]
+[[https://www.patreon.com/conao3][https://img.shields.io/badge/patreon-@conao3-orange.svg?logo=patreon&style=flat-square]]
+[[https://twitter.com/conao_3][https://img.shields.io/badge/twitter-@conao__3-blue.svg?logo=twitter&style=flat-square]]
+[[https://conao3-support.slack.com/join/shared_invite/enQtNjUzMDMxODcyMjE1LWUwMjhiNTU3Yjk3ODIwNzAxMTgwOTkxNmJiN2M4OTZkMWY0NjI4ZTg4MTVlNzcwNDY2ZjVjYmRiZmJjZDU4MDE][https://img.shields.io/badge/chat-on_slack-blue.svg?logo=slack&style=flat-square]]
+
+* Table of Contents
+- [[#description][Description]]
+- [[#install][Install]]
+  - [[#el-get-install][El-get install]]
+  - [[#manual-install][Manual install]]
+- [[#usage][Usage]]
+- [[#information][Information]]
+  - [[#donation][Donation]]
+  - [[#community][Community]]
+  - [[#contribution][Contribution]]
+  - [[#migration][Migration]]
+  - [[#license][License]]
+  - [[#author][Author]]
+  - [[#contributors][Contributors]]
+  - [[#special-thanks][Special Thanks]]
+
+* Description
+~liskk.el~ is yet another [[https://github.com/skk-dev/ddskk][ddskk]].
+
+~liskk~ comes from ~risk~. This project is not stable yet, but it has a lot of potential.
+
+* Install
+~liskk.el~ are not part of MELPA. So you need to download it on your hand.
+
+** El-get install
+[[https://github.com/conao3/leaf.el][leaf]] with ~:el-get~ keyword extended by [[https://github.com/conao3/leaf-keywords.el][leaf-keywords.el]].
+
+#+begin_src emacs-lisp
+  (leaf liskk
+    :el-get conao3/liskk.el)
+#+end_src
+
+** Manual instlal
+Put ~liskk.el~ in any folder added ~load-path~ then ~require~.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path (locate-user-emacs-file "site-lisp/liskk.el"))
+  (require 'liskk)
+#+END_SRC
+
+* Usage
+
+* Information
+** Donation
+I love OSS and I am dreaming of working on it as *full-time* job.
+
+*With your support*, I will be able to spend more time at OSS!
+
+[[https://www.patreon.com/conao3][https://c5.patreon.com/external/logo/become_a_patron_button.png]]
+
+** Community
+All feedback and suggestions are welcome!
+
+You can use github issues, but you can also use [[https://conao3-support.slack.com/join/shared_invite/enQtNjUzMDMxODcyMjE1LWUwMjhiNTU3Yjk3ODIwNzAxMTgwOTkxNmJiN2M4OTZkMWY0NjI4ZTg4MTVlNzcwNDY2ZjVjYmRiZmJjZDU4MDE][Slack]]
+if you want a more casual conversation.
+
+** Contribution
+We welcome PR!
+Travis Cl test with all Emacs version 22 or above.
+
+I think that it is difficult to prepare the environment locally,
+so I think that it is good to throw PR and test Travis for the time being!
+Feel free throw PR!
+
+** Migration
+
+** License
+#+begin_example
+  Affero General Public License Version 3 (AGPLv3)
+  Copyright (c) Naoya Yamashita - https://conao3.com
+  https://github.com/conao3/liskk.el/blob/master/LICENSE
+#+end_example
+
+** Author
+- Naoya Yamashita ([[https://github.com/conao3][conao3]])
+
+** Contributors
