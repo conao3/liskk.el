@@ -36,6 +36,21 @@
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
   :group 'lisp)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Customization
+;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Minor-mode
+;;
+
+(define-minor-mode liskk-mode
+  "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
+  :require 'liskk
+  :lighter " liskk"
+  :group 'liskk)
 
 (provide 'liskk)
 ;;; liskk.el ends here
