@@ -131,5 +131,6 @@
                                 ("ゃ" nil "ゅ" nil "ょ"))
                                ("w"
                                 ("ゎ" "ゐ" nil "ゑ" nil))))))))
+
 (provide 'leaf-keywords-tests)
 ;;; leaf-keywords-tests.el ends here

@@ -30,6 +30,7 @@ DEPENDS      :=
 
 TESTFILE     := liskk-tests.el
 ELS          := liskk.el
+ELS           += liskk-polyfill.el liskk-rule.el
 
 CORTELS      := $(TESTFILE) cort-test.el
 
