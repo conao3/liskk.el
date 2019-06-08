@@ -46,5 +46,90 @@
        (    "a" "s" "d" "f" "g" "h" "j" "k" "l" ";" ":" "]")
        (    "z" "x" "c" "v" "b" "n" "m" "," "." "/" "\\")))))
 
+(cort-deftest liskk/rule
+  '((:equal
+     '(("a" nil "あ")
+       ("i" nil "い")
+       ("u" nil "う")
+       ("e" nil "え")
+       ("o" nil "お")
+       ("ka" nil "か")
+       ("ki" nil "き")
+       ("ku" nil "く")
+       ("ke" nil "け")
+       ("ko" nil "こ")
+       ("kya" nil "きゃ")
+       ("kyi" nil "きぃ")
+       ("kyu" nil "きゅ")
+       ("kye" nil "きぇ")
+       ("kyo" nil "きょ"))
+     (liskk-rule-roman-make '(""
+                              ("あ" "い" "う" "え" "お")
+                              ("k"
+                               ("か" "き" "く" "け" "こ")
+                               ("y"
+                                ("きゃ" "きぃ" "きゅ" "きぇ" "きょ")))
+                              )))
+    (:equal
+     '(("a" nil "あ")
+       ("i" nil "い")
+       ("u" nil "う")
+       ("e" nil "え")
+       ("o" nil "お")
+       ("ka" nil "か")
+       ("ki" nil "き")
+       ("ku" nil "く")
+       ("ke" nil "け")
+       ("ko" nil "こ")
+       ("kya" nil "きゃ")
+       ("kyi" nil "きぃ")
+       ("kyu" nil "きゅ")
+       ("kye" nil "きぇ")
+       ("kyo" nil "きょ")
+       ("cha" nil "ちゃ")
+       ("chi" nil "ち")
+       ("chu" nil "ちゅ")
+       ("che" nil "ちぇ")
+       ("cho" nil "ちょ")
+       ("cya" nil "ちゃ")
+       ("cyi" nil "ちぃ")
+       ("cyu" nil "ちゅ")
+       ("cye" nil "ちぇ")
+       ("cyo" nil "ちょ")
+       ("xa" nil "ぁ")
+       ("xi" nil "ぃ")
+       ("xu" nil "ぅ")
+       ("xe" nil "ぇ")
+       ("xo" nil "ぉ")
+       ("xtu" nil "っ")
+       ("xtsu" nil "っ")
+       ("xya" nil "ゃ")
+       ("xyu" nil "ゅ")
+       ("xyo" nil "ょ")
+       ("xwa" nil "ゎ")
+       ("xwi" nil "ゐ")
+       ("xwe" nil "ゑ"))
+     (liskk-rule-roman-make '(""
+                              ("あ" "い" "う" "え" "お")
+                              ("k"
+                               ("か" "き" "く" "け" "こ")
+                               ("y"
+                                ("きゃ" "きぃ" "きゅ" "きぇ" "きょ")))
+                              ("c"
+                               nil
+                               ("h"
+                                ("ちゃ" "ち" "ちゅ" "ちぇ" "ちょ"))
+                               ("y"
+                                ("ちゃ" "ちぃ" "ちゅ" "ちぇ" "ちょ")))
+                              ("x"
+                               ("ぁ" "ぃ" "ぅ" "ぇ" "ぉ")
+                               ("t"
+                                (nil nil "っ" nil nil)
+                                ("s"
+                                 (nil nil "っ" nil nil)))
+                               ("y"
+                                ("ゃ" nil "ゅ" nil "ょ"))
+                               ("w"
+                                ("ゎ" "ゐ" nil "ゑ" nil))))))))
 (provide 'leaf-keywords-tests)
 ;;; leaf-keywords-tests.el ends here
