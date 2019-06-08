@@ -149,7 +149,52 @@
      ,@(liskk-rule-roman-repeat-make
         '("k" "g" "s" "z" "j" "t" "d" "c"
           "h" "f" "b" "p" "m" "y" "r" "w" "v" "x"))
-     ("n" nil "ん") ("n'" nil "ん") ("nn" nil "ん"))))
+
+     ;; n
+     ("n" nil "ん") ("n'" nil "ん") ("nn" nil "ん")
+
+     ;; z
+     ("z " nil "　")
+     ("z*" nil "※")
+     ("z," nil "‥")
+     ("z-" nil "〜")
+     ("z." nil "…")
+     ("z/" nil "・")
+     ("z0" nil "○")
+     ("z:" nil "゜")
+     ("z;" nil "゛")
+     ("z@" nil "◎")
+     ("z[" nil "『")
+     ("z]" nil "』")
+     ("z{" nil "【")
+     ("z}" nil "】")
+     ("z(" nil "（")
+     ("z)" nil "）")
+     ("zh" nil "←")
+     ("zj" nil "↓")
+     ("zk" nil "↑")
+     ("zl" nil "→")
+     ("zL" nil "⇒")
+
+     ;; others
+     ("." nil liskk-auto-kutouten)
+     ("," nil liskk-auto-kutouten)
+     ("-" nil liskk-auto-kutouten)
+     (":" nil "：")
+     (";" nil "；")
+     ("?" nil "？")
+     ("[" nil "「")
+     ("]" nil "」")
+     ("l" nil liskk-latin-mode)
+     ("q" nil liskk-toggle-kana)
+     ("L" nil liskk-jisx0208-latin-mode)
+     ("Q" nil liskk-set-henkan-point-subr)
+     ("X" nil liskk-purge-from-jisyo)
+     ("/" nil liskk-abbrev-mode)
+     ("$" nil liskk-display-code-for-char-at-point)
+     ("@" nil liskk-today)
+     ("\\" nil liskk-input-by-code-or-menu)
+     (liskk-kakutei-key nil liskk-kakutei))))
 
 (provide 'liskk-rule)
 ;;; liskk-rule.el ends here

@@ -41,49 +41,7 @@
 ;;
 
 (defconst liskk-rule-roman-kana-base-alist
-  `(roman . (,@liskk-rule-roman-kana-base
-             ;; z
-             ("z " nil "　")
-             ("z*" nil "※")
-             ("z," nil "‥")
-             ("z-" nil "〜")
-             ("z." nil "…")
-             ("z/" nil "・")
-             ("z0" nil "○")
-             ("z:" nil "゜")
-             ("z;" nil "゛")
-             ("z@" nil "◎")
-             ("z[" nil "『")
-             ("z]" nil "』")
-             ("z{" nil "【")
-             ("z}" nil "】")
-             ("z(" nil "（")
-             ("z)" nil "）")
-             ("zh" nil "←")
-             ("zj" nil "↓")
-             ("zk" nil "↑")
-             ("zl" nil "→")
-             ("zL" nil "⇒")
-
-             ;; others
-             ("." nil liskk-auto-kutouten)
-             ("," nil liskk-auto-kutouten)
-             ("-" nil liskk-auto-kutouten)
-             (":" nil "：")
-             (";" nil "；")
-             ("?" nil "？")
-             ("[" nil "「")
-             ("]" nil "」")
-             ("l" nil liskk-latin-mode)
-             ("q" nil liskk-toggle-kana)
-             ("L" nil liskk-jisx0208-latin-mode)
-             ("Q" nil liskk-set-henkan-point-subr)
-             ("X" nil liskk-purge-from-jisyo)
-             ("/" nil liskk-abbrev-mode)
-             ("$" nil liskk-display-code-for-char-at-point)
-             ("@" nil liskk-today)
-             ("\\" nil liskk-input-by-code-or-menu)
-             (liskk-kakutei-key nil liskk-kakutei)))
+  `(roman . liskk-rule-roman-kana-base)
   "The conversion rule roman to kana.
 
 リストの各要素は次の形式である必要がある
