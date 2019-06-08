@@ -80,6 +80,13 @@
                    (liskk-rule-roman-make elm str))
                  next))))))
 
+(defun liskk-rule-roman-repeat-make (lst)
+  "Make roman repeat rule."
+  (mapcar
+   (lambda (elm)
+     `(,(concat elm elm) ,elm "っ"))
+   lst))
+
 (defconst liskk-rule-roman-kana-base
   `(,@(liskk-rule-roman-make
        '(""     ("あ"   "い"   "う"   "え"   "お")
@@ -126,6 +133,9 @@
            ("s" (nil    nil    "っ"   nil    nil)))
           ("y"  ("ゃ"   nil    "ゅ"   nil    "ょ"))
           ("w"  ("ゎ"   "ゐ"   nil    "ゑ"    nil)))))
+    ,@(liskk-rule-roman-repeat-make
+       '("k" "g" "s" "z" "j" "t" "d" "c"
+         "h" "f" "b" "p" "m" "y" "r" "w" "v" "x"))
     ("n" nil "ん") ("n'" nil "ん") ("nn" nil "ん")))
 
 (provide 'liskk-rule)
