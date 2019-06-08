@@ -40,6 +40,36 @@
 ;;  Customization
 ;;
 
+(defcustom liskk-mode-base-lighter " liskk"
+  "Base lighter for `liskk-mode'."
+  :type 'string
+  :group 'liskk)
+
+(defcustom liskk-mode-kana-lighter "[かな]"
+  "Base lighter for `liskk-mode'."
+  :type 'string
+  :group 'liskk)
+
+(defcustom liskk-mode-katakana-lighter "[カナ]"
+  "Base lighter for `liskk-mode'."
+  :type 'string
+  :group 'liskk)
+
+(defcustom liskk-mode-ascii-lighter "[半英]"
+  "Base lighter for `liskk-mode'."
+  :type 'string
+  :group 'liskk)
+
+(defcustom liskk-mode-zen-ascii-lighter "[全英]"
+  "Base lighter for `liskk-mode'."
+  :type 'string
+  :group 'liskk)
+
+(defcustom liskk-mode-abbrev-lighter "[aあ]"
+  "Base lighter for `liskk-mode'."
+  :type 'string
+  :group 'liskk)
+
 (defconst liskk-rule-roman-kana-base-alist
   `(roman . ,liskk-rule-roman-kana-base)
   "The conversion rule roman to kana.
@@ -149,7 +179,7 @@ NEXT-STATE に状態を移したうえで、入力待ち状態となる。
 (define-minor-mode liskk-mode
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
   :require 'liskk
-  :lighter " liskk"
+  :lighter liskk-mode-base-lighter
   :group 'liskk)
 
 (provide 'liskk)
