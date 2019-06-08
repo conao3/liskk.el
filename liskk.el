@@ -46,11 +46,6 @@
   "Make roman rule from RULE."
   `(,(car rule) (,(cdr rule) (,(japanese-katakana (cdr rule))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;  Definition
-;;
-
 (defconst liskk-rule-us
   (liskk-rule-layout-make
    '(("`" "1" "2" "3" "4" "5" "6" "7" "8" "9" "0" "-" "=")
