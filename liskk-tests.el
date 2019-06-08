@@ -130,7 +130,39 @@
                                ("y"
                                 ("ゃ" nil "ゅ" nil "ょ"))
                                ("w"
-                                ("ゎ" "ゐ" nil "ゑ" nil))))))))
+                                ("ゎ" "ゐ" nil "ゑ" nil))))))
+    (:equal
+     '(("kk" "k" "っ") ("gg" "g" "っ") ("ss" "s" "っ"))
+     (liskk-rule-roman-repeat-make '("k" "g" "s")))
+    (:equal
+     '(("l" nil liskk-latin-mode)
+       ("q" nil liskk-toggle-kana)
+       ("L" nil liskk-jisx0208-latin-mode)
+       ("a" nil ("あ" "ア"))
+       ("i" nil ("い" "イ"))
+       ("u" nil ("う" "ウ"))
+       ("e" nil ("え" "エ"))
+       ("o" nil ("お" "オ"))
+       ("zh" nil ("←" "←"))
+       ("zj" nil ("↓" "↓"))
+       ("zk" nil ("↑" "↑"))
+       ("zl" nil ("→" "→"))
+       ("zL" nil ("⇒" "⇒")))
+     (liskk-rule-roman-katakana-make
+      '(("l" nil liskk-latin-mode)
+        ("q" nil liskk-toggle-kana)
+        ("L" nil liskk-jisx0208-latin-mode)
+        ("a" nil "あ")
+        ("i" nil "い")
+        ("u" nil "う")
+        ("e" nil "え")
+        ("o" nil "お")
+        ("zh" nil "←")
+        ("zj" nil "↓")
+        ("zk" nil "↑")
+        ("zl" nil "→")
+        ("zL" nil "⇒")
+        )))))
 
 (provide 'leaf-keywords-tests)
 ;;; leaf-keywords-tests.el ends here
