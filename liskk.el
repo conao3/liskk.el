@@ -173,8 +173,16 @@ NEXT-STATE に状態を移したうえで、入力待ち状態となる。
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;;  Implemention
+;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;;  Minor-mode
 ;;
+
+;; katakana ascii zen-ascii abbrev
+(defvar-local liskk-internal-mode 'kana)
 
 (define-minor-mode liskk-mode
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
