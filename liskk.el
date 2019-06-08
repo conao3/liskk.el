@@ -99,7 +99,6 @@
              ("ss" "s" "っ")
              ("sa" nil "さ")
              ("si" nil "し")
-             ("shi" nil "し")
              ("su" nil "す")
              ("se" nil "せ")
              ("so" nil "そ")
@@ -109,6 +108,7 @@
              ("sye" nil "しぇ")
              ("syo" nil "しょ")
              ("sha" nil "しゃ")
+             ("shi" nil "し")
              ("shu" nil "しゅ")
              ("she" nil "しぇ")
              ("sho" nil "しょ")
@@ -297,8 +297,9 @@
              ("va" nil "ゔぁ")
              ("ve" nil "ゔぇ")
              ("vi" nil "ゔぃ")
-             ("vo" nil "ゔぉ")
              ("vu" nil "ゔ")
+             ("vo" nil "ゔぉ")
+             
 
              ;; x
              ("xx" "x" "っ")
