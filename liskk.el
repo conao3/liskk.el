@@ -41,7 +41,7 @@
 ;;
 
 (defconst liskk-rule-roman-kana-base-alist
-  `(roman . liskk-rule-roman-kana-base)
+  `(roman . ,liskk-rule-roman-kana-base)
   "The conversion rule roman to kana.
 
 リストの各要素は次の形式である必要がある
