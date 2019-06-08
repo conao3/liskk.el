@@ -29,7 +29,22 @@
 (load "cort-test")
 (require 'liskk)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Test definition
+;;
+
+(cort-deftest liskk/layout-make
+  '((:equal
+     (liskk-rule-layout-make
+      '(("`" "1" "2" "3" "4" "5" "6" "7" "8" "9" "0" "-" "^" "¥")
+        (    "q" "w" "e" "r" "t" "y" "u" "i" "o" "p" "@" "[")
+        (    "a" "s" "d" "f" "g" "h" "j" "k" "l" ";" ":" "]")
+        (    "z" "x" "c" "v" "b" "n" "m" "," "." "/" "\\")))
+     '(("`" "1" "2" "3" "4" "5" "6" "7" "8" "9" "0" "-" "^" [165])
+       (    "q" "w" "e" "r" "t" "y" "u" "i" "o" "p" "@" "[")
+       (    "a" "s" "d" "f" "g" "h" "j" "k" "l" ";" ":" "]")
+       (    "z" "x" "c" "v" "b" "n" "m" "," "." "/" "\\")))))
 
 (provide 'leaf-keywords-tests)
 ;;; leaf-keywords-tests.el ends here
-
