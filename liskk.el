@@ -139,7 +139,7 @@ NEXT-STATE に状態を移したうえで、入力待ち状態となる。
 		       (cons :tag "文字列の組"
 			     (string :tag "3-1 カタカナ")
 			     (string :tag "3-2 ひらがな")))))
-  :group 'liskk-input-basic)
+  :group 'liskk)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
