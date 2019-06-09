@@ -211,6 +211,85 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 ;;  Implemention
 ;;
 
+(defun liskk-erase-prefix ()
+  "Remove overlay prefix.")
+
+(defun liskk-insert ()
+  "LISKK version of `self-insert-command'.")
+
+(defun liskk-kana-insert (kana)
+  "Insert kana."
+  (with-current-buffer "*liskk-debug*"
+    (insert kana)
+    (insert "\n")))
+
+(defvar liskk-current-rule-node nil)
+
+(defun liskk-kana-input (key)
+  "Input key and convert kana.
+
+かな文字の入力を行うルーチン。
+
+Message-Id: <19980610190611B.sakurada@kuis.kyoto-u.ac.jp>
+From: Hideki Sakurada <sakurada@kuis.kyoto-u.ac.jp>
+Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
+
+新しい skk-kana-input は, 簡単に説明すると,あらかじめルールを木の形
+に表現しておいて, 入力を見て木を辿り, それ以上辿れなくなったらその節
+に登録されている仮名を入力する. というしくみです.
+
+例えば, n a t のみからなる以下のルール
+
+    a  → あ
+    n  → ん
+    nn → ん
+    na → な
+    ta → た
+    tt → っ (次状態 t)
+
+をルール木に変換すると,
+
+                ／/＼
+              ／ /   ＼
+          a ／  / t    ＼ n
+          ／   /         ＼
+         あ   ・           ん
+            ／|           / ＼
+        a ／  | t      a /    ＼ n
+        ／    |         /       ＼
+      た     っ        な        ん
+         (次状態 \"t\")
+
+という形になります.
+
+初期状態(木の根)で `a' を入力すると, 木の根から「あ」に移動します.
+次にどのような入力が来ても,それより下に辿れないので, 「あ」を出力し
+て根に戻ります. ルールに次状態が設定されている場合は, 設定されている
+文字列をキューに戻してから根に戻ります.
+
+初期状態で `n' を入力すると, 「ん」に移動します. 次に `a' または `n'
+が入力されればそれより下に辿れるので次の入力を見るまでまだ出力しませ
+ん. 次に `t' が入力された場合は, `t' では下に辿れないので,「ん」を出
+力して `t' をキューに戻します."
+
+  ;; 状態がない場合、根からもう一度処理を始める。 (現在の状態が強制リセットされた場合など)
+  (unless liskk-current-rule-node
+    (setq liskk-current-rule-node liskk-rule-tree))
+
+  ;; 現在の葉から次の状態に遷移しようとする
+  (if (assoc key (nth 4 liskk-current-rule-node))
+
+      ;; 次の状態に遷移できた場合。 状態を更新する
+      (setq liskk-current-rule-node (assoc key (nth 4 liskk-current-rule-node)))
+
+    ;; 次の状態に遷移できない。 変換前の英字を消して、現在の葉の文字列を挿入する。
+    ;; 葉に次状態の指定があれば、それを実行する。
+    (liskk-erase-prefix)
+    (liskk-kana-insert (nth 3 liskk-current-rule-node))
+    (setq liskk-current-rule-node liskk-rule-tree)
+    (dolist (key (split-string "" (nth 2 liskk-current-rule-node) 'omit))
+      (liskk-kana-input key))))
+
 (defun liskk-compile-rule-tree-add (current-node str node)
   "Add NODE and STR to CURRENT-NODE."
   (let* ((nkey     (aref str 0))
@@ -249,7 +328,7 @@ Treeは次の形式である:
 
 なお、<key>がnilの場合、その葉は根であり、
 <str>や<out>がnilの場合、その葉によって挿入される文字列はないことを示す。"
-  (setq liskk-rule-tree '(nil nil nil nill nil))
+  (setq liskk-rule-tree '(nil nil nil nil nil))
   (mapc
    (lambda (elm)
      (liskk-compile-rule-tree-add liskk-rule-tree (car elm) elm))
