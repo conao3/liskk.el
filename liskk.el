@@ -49,30 +49,30 @@
   :type 'string
   :group 'liskk)
 
-(defcustom liskk-mode-kana-lighter "[かな]"
-  "Base lighter for `liskk-mode'."
-  :type 'string
-  :group 'liskk)
+;; katakana ascii zen-ascii abbrev
+(defvar-local liskk-internal-mode 'kana)
 
-(defcustom liskk-mode-katakana-lighter "[カナ]"
-  "Base lighter for `liskk-mode'."
-  :type 'string
-  :group 'liskk)
+(defvar liskk-internal-modes '((liskk-kana-mode      . "[かな]")
+                               (liskk-katakana-mode  . "[カナ]")
+                               (liskk-ascii-mode     . "[半英]")
+                               (liskk-zen-ascii-mode . "[全英]")
+                               (liskk-abbrev-mode    . "[aあ]")))
 
-(defcustom liskk-mode-ascii-lighter "[半英]"
-  "Base lighter for `liskk-mode'."
-  :type 'string
-  :group 'liskk)
-
-(defcustom liskk-mode-zen-ascii-lighter "[全英]"
-  "Base lighter for `liskk-mode'."
-  :type 'string
-  :group 'liskk)
-
-(defcustom liskk-mode-abbrev-lighter "[aあ]"
-  "Base lighter for `liskk-mode'."
-  :type 'string
-  :group 'liskk)
+(eval
+ `(progn
+    ,@(mapcan
+       (lambda (elm)
+         (let ((mode-name (symbol-name (car elm)))
+               (lighter   (cdr elm)))
+           `((defcustom ,(intern (format "%s-lighter" mode-name)) ,lighter
+               ,(format "The lighter for internal %s for `liskk-mode'." mode-name)
+               :type 'string
+               :group 'liskk)
+             (defvar ,(intern (format "%s-map" mode-name)) (make-sparse-keymap)
+               ,(format "Keymap for internal %s for `liskk-mode'." mode-name))
+             (defvar ,(intern (format "%s-hook" mode-name)) nil
+               ,(format "Hook for when internal %s turn on for `liskk-mode'." mode-name)))))
+       liskk-internal-modes)))
 
 (defcustom liskk-preface-dict-buffer-name " *liskk-preface-dict-%s*"
   "Buffer name for `liskk-preface-dict-path-list'."
@@ -210,6 +210,13 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 ;;
 ;;  Implemention
 ;;
+
+(defvar skk-mode-map)
+(defvar skk-kana-mode-map)
+(defvar skk-katakana-mode-map)
+(defvar skk-ascii-mode-map)
+(defvar skk-zen-ascii-mode-map)
+(defvar skk-abbrev-mode-map)
 
 (defun liskk-erase-prefix ()
   "Remove overlay prefix.")
@@ -372,9 +379,6 @@ Treeは次の形式である:
 ;;
 ;;  Minor-mode
 ;;
-
-;; katakana ascii zen-ascii abbrev
-(defvar-local liskk-internal-mode 'kana)
 
 (define-minor-mode liskk-mode
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
