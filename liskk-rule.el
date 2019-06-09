@@ -193,8 +193,7 @@
      ("/" nil liskk-abbrev-mode)
      ("$" nil liskk-display-code-for-char-at-point)
      ("@" nil liskk-today)
-     ("\\" nil liskk-input-by-code-or-menu)
-     (liskk-kakutei-key nil liskk-kakutei))))
+     ("\\" nil liskk-input-by-code-or-menu))))
 
 (provide 'liskk-rule)
 ;;; liskk-rule.el ends here

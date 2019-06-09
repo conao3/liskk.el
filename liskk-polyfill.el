@@ -35,5 +35,7 @@
 (unless (fboundp 'mapcan)
   (defalias 'mapcan 'leaf-mapcaappend))
 
+(defalias 'liskk-alist-get 'alist-get)
+
 (provide 'liskk-polyfill)
 ;;; liskk-polyfill.el ends here

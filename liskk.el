@@ -29,6 +29,7 @@
 
 ;;; Code:
 
+(require 'liskk-polyfill)
 (require 'liskk-rule)
 
 (defgroup liskk nil
@@ -41,6 +42,7 @@
 ;;
 
 (defvar liskk-initialize-p nil)
+(defvar liskk-rule-tree nil)
 
 (defcustom liskk-mode-base-lighter " liskk"
   "Base lighter for `liskk-mode'."
@@ -136,7 +138,7 @@ Non-nilであれば、指定された辞書を検索のためバッファに読�
   :group 'liskk)
 
 (defconst liskk-rule-roman-kana-base-alist
-  `(roman . ,liskk-rule-roman-kana-base)
+  `((roman . ,liskk-rule-roman-kana-base))
   "The conversion rule roman to kana.
 
 リストの各要素は次の形式である必要がある
@@ -241,6 +243,51 @@ NEXT-STATE に状態を移したうえで、入力待ち状態となる。
 ;;  Implemention
 ;;
 
+(defun liskk-compile-rule-tree-add (current-node str node)
+  "Add NODE and STR to CURRENT-NODE."
+  (let* ((nkey     (aref str 0))
+         (nkeyrest (substring str 1))
+         (nstr     (nth 0 node))
+         (nnext    (nth 1 node))
+         (nout     (nth 2 node))
+         (statep   (= 1 (length str))))
+    (if (assoc nkey (nth 4 current-node))
+        (progn
+          (if statep
+              (progn
+                (setf (nth 0 (assoc nkey (nth 4 current-node))) nkey)
+                (setf (nth 1 (assoc nkey (nth 4 current-node))) nstr)
+                (setf (nth 2 (assoc nkey (nth 4 current-node))) nnext)
+                (setf (nth 3 (assoc nkey (nth 4 current-node))) nout))
+            (liskk-compile-rule-tree-add (assoc nkey (nth 4 current-node)) nkeyrest node)))
+      (setf (nth 4 current-node)
+            (append (if statep
+                        (list (list nkey nstr nnext nout nil))
+                      (list (list nkey nil nnext nil nil)))
+                    (nth 4 current-node)))
+      (unless statep
+        (liskk-compile-rule-tree-add (assoc nkey (nth 4 current-node)) nkeyrest node)))))
+
+(defun liskk-compile-rule-tree-make (method)
+  "Compile RULE-LISTS to `liskk-rule-tree'.
+RULE-LISTSを木の形にコンパイルする。
+
+Treeは次の形式である:
+<tree> := nil | (<key> <str> <next> <out> (<tree>*))
+<key>  := nil | [char];   該当の木に遷移するキー
+<str>  := nil | [string]; 該当の葉に遷移するために必要な全体のキー
+<next> := nil | [string]; 該当の葉に遷移した後に遷移する状態
+<out>  := nil | [string]; 該当の葉に遷移した時に挿入される文字(列)
+
+なお、<key>がnilの場合、その葉は根であり、
+<str>や<out>がnilの場合、その葉によって挿入される文字列はないことを示す。"
+  (setq liskk-rule-tree nil)
+  (mapc
+   (lambda (elm)
+     (liskk-compile-rule-tree-add liskk-rule-tree (car elm) elm))
+   (mapcan 'reverse (list (liskk-alist-get method liskk-rule-roman-kana-base-alist)
+                          (liskk-alist-get method liskk-rule-roman-kana-alist)))))
+
 (defun liskk-prepare-dict ()
   "Prepare dictionary."
   (dolist (elm '(liskk-preface-dict-path-list liskk-shared-dict-path-list))
@@ -288,6 +335,7 @@ NEXT-STATE に状態を移したうえで、入力待ち状態となる。
   :group 'liskk
   (unless liskk-initialize-p
     (liskk-prepare-dict)
+    (liskk-compile-rule-tree-make 'roman)
     (setq liskk-initialize-p t))
 
   (if liskk-mode
