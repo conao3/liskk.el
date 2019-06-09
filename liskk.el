@@ -286,6 +286,7 @@ NEXT-STATE に状態を移したうえで、入力待ち状態となる。
   :group 'liskk
   (if liskk-mode
       (progn
+        (setq-local liskk-internal-mode 'kana)
         (liskk-prepare-dict))))
 
 (provide 'liskk)
