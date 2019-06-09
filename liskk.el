@@ -85,12 +85,31 @@
   :type 'string
   :group 'liskk)
 
+(defvar liskk-well-known-dictionary-name
+  '("SKK-JISYO.L" "SKK-JISYO.ML" "SKK-JISYO.M" "SKK-JISYO.S"
+    "SKK-JISYO.JIS2" "SKK-JISYO.JIS3_4" "SKK-JISYO.pubdic+"
+    "SKK-JISYO.wrong.annotated" "SKK-JISYO.okinawa" "SKK-JISYO.geo"
+    "SKK-JISYO.jinmei" "SKK-JISYO.law" "SKK-JISYO.mazegaki"
+    "SKK-JISYO.assoc" "SKK-JISYO.itaiji" "SKK-JISYO.itaiji.JIS3_4"
+    "SKK-JISYO.china_taiwan" "SKK-JISYO.propernoun" "SKK-JISYO.station"
+    "SKK-JISYO.requested" "SKK-JISYO.fullname" "SKK-JISYO.JIS2004"
+    "SKK-JISYO.lisp"))
+
+(defcustom liskk-dict-download-url
+  "https://raw.githubusercontent.com/conao3/liskk-dict.el/master/utf-8/%s"
+  "The url to download dictionary."
+  :type 'string
+  :group 'liskk)
+
 (defcustom liskk-preface-dict-path-list
   (list (locate-user-emacs-file "liskk/dict/preface.L"))
   "Dictionary list to search before searching the personal dictionary.
 個人辞書の検索の前に検索する辞書。
 見出し語は、ソートされていなければならない。
-Non-nilであれば、指定された辞書を検索のためバッファに読み込み、検索を行う。"
+Non-nilであれば、指定された辞書を検索のためバッファに読み込み、検索を行う。
+
+`liskk-well-known-dictionary-name'に含まれるファイル名を指定した場合、
+ファイルが存在しなければ自動的にダウンロードする。"
   :type 'sexp
   :group 'liskk)
 
@@ -107,7 +126,10 @@ Non-nilであれば、指定された辞書を検索のためバッファに読�
   "Dictionary list to search after searching the personal dictionary.
 個人辞書の検索の後に検索する辞書。
 見出し語は、ソートされていなければならない。
-Non-nilであれば、指定された辞書を検索のためバッファに読み込み、検索を行う。"
+Non-nilであれば、指定された辞書を検索のためバッファに読み込み、検索を行う。
+
+`liskk-well-known-dictionary-name'に含まれるファイル名を指定した場合、
+ファイルが存在しなければ自動的にダウンロードする。"
   :type 'sexp
   :group 'liskk)
 
@@ -219,6 +241,17 @@ NEXT-STATE に状態を移したうえで、入力待ち状態となる。
 
 (defun liskk-prepare-dict ()
   "Prepare dictionary."
+  (dolist (elm '(liskk-preface-dict-path-list liskk-shared-dict-path-list))
+    (mapc
+     (lambda (el)
+       (let ((filename (file-name-nondirectory el)))
+         (when (and (not (file-readable-p el))
+                    (member filename liskk-well-known-dictionary-name))
+           (with-temp-file el
+             (url-insert-file-contents
+              (format liskk-dict-download-url filename))))))
+     elm))
+
   (when liskk-preface-dict-path-list
     (dolist (num (number-sequence 1 (length liskk-preface-dict-path-list)))
       (with-current-buffer (get-buffer-create
