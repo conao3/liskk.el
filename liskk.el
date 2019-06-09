@@ -141,17 +141,17 @@ Non-nilであれば、指定された辞書を検索のためバッファに読�
   `((roman . ,liskk-rule-roman-kana-base))
   "The conversion rule roman to kana.
 
-リストの各要素は次の形式である必要がある
-  (INPUT-STATE NEXT-STATE OUTPUT)
+alistは次の形式である:
+<alist>     := nil | (<rule-cell>*)
+<rule-cell> := (<method> . (<rule>*))
+<rule>      := (<input> <next> <output>)
+<method>    := [symbol]; 入力方法の識別のためのシンボル
+<input>     := [string]; ルール実行のために必要な入力
+<next>      := [string]; ルール実行後に遷移する状態
+<output>    := [string]; ルール実行後に挿入される文字(列)(ひらがなで指定する)
+                 | [symbol]; ルール実行後に関数を実行する
 
-INPUT-STATE, NEXT-STATEはstring, OUTPUTは下記の形式を指定できる
-  String         - 全てのモードで指定された文字を挿入する
-  List of String - モードによって挿入される文字を変更 (かなモード カナモード)
-  Symbol         - 関数を実行する
-
-INPUT-STATEを認識したら、OUTPUTを挿入/実行し、NEXT-STATEに移行する
-
-Ex:
+<rule>の例:
   (\"a\" nil (\"あ ア\"))
   (\"ki\" nil (\"き キ\"))
   (\"tt\" t (\"っ ッ\"))
