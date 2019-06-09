@@ -249,12 +249,13 @@ Treeは次の形式である:
 
 なお、<key>がnilの場合、その葉は根であり、
 <str>や<out>がnilの場合、その葉によって挿入される文字列はないことを示す。"
-  (setq liskk-rule-tree nil)
+  (setq liskk-rule-tree '(nil nil nil nill nil))
   (mapc
    (lambda (elm)
      (liskk-compile-rule-tree-add liskk-rule-tree (car elm) elm))
    (mapcan 'reverse (list (liskk-alist-get method liskk-rule-roman-kana-base-alist)
-                          (liskk-alist-get method liskk-rule-roman-kana-alist)))))
+                          (liskk-alist-get method liskk-rule-roman-kana-alist))))
+  liskk-rule-tree)
 
 (defun liskk-prepare-dict ()
   "Prepare dictionary."
