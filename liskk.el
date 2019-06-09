@@ -102,7 +102,7 @@
   :group 'liskk)
 
 (defcustom liskk-preface-dict-path-list
-  (list (locate-user-emacs-file "liskk/dict/preface.L"))
+  (list (locate-user-emacs-file "liskk/preface.L"))
   "Dictionary list to search before searching the personal dictionary.
 個人辞書の検索の前に検索する辞書。
 見出し語は、ソートされていなければならない。
@@ -114,7 +114,7 @@ Non-nilであれば、指定された辞書を検索のためバッファに読�
   :group 'liskk)
 
 (defcustom liskk-personal-dict-path
-  (locate-user-emacs-file "liskk/dict/personal.L")
+  (locate-user-emacs-file "liskk/personal.L")
   "Personal dictionary file path and save path.
 個人辞書のパス。また、このパスに個人辞書を保存する。
 見出し語は、ソートされていなければならない。 nilの場合、個人辞書の保存を行わない。"
@@ -122,7 +122,7 @@ Non-nilであれば、指定された辞書を検索のためバッファに読�
   :group 'liskk)
 
 (defcustom liskk-shared-dict-path-list
-  (list (locate-user-emacs-file "liskk/dict/SKK-JISYO.L"))
+  (list (locate-user-emacs-file "liskk/SKK-JISYO.L"))
   "Dictionary list to search after searching the personal dictionary.
 個人辞書の検索の後に検索する辞書。
 見出し語は、ソートされていなければならない。
