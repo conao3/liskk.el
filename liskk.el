@@ -40,6 +40,8 @@
 ;;  Customization
 ;;
 
+(defvar liskk-initialize-p nil)
+
 (defcustom liskk-mode-base-lighter " liskk"
   "Base lighter for `liskk-mode'."
   :type 'string
@@ -284,10 +286,13 @@ NEXT-STATE に状態を移したうえで、入力待ち状態となる。
   :require 'liskk
   :lighter liskk-mode-base-lighter
   :group 'liskk
+  (unless liskk-initialize-p
+    (liskk-prepare-dict)
+    (setq liskk-initialize-p t))
+
   (if liskk-mode
       (progn
-        (setq-local liskk-internal-mode 'kana)
-        (liskk-prepare-dict))))
+        (setq-local liskk-internal-mode 'kana))))
 
 (provide 'liskk)
 ;;; liskk.el ends here
