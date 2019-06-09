@@ -142,14 +142,14 @@ Non-nilであれば、指定された辞書を検索のためバッファに読�
   "The conversion rule roman to kana.
 
 alistは次の形式である:
-<alist>     := nil | (<rule-cell>*)
-<rule-cell> := (<method> . (<rule>*))
-<rule>      := (<input> <next> <output>)
-<method>    := [symbol]; 入力方法の識別のためのシンボル
-<input>     := [string]; ルール実行のために必要な入力
-<next>      := [string]; ルール実行後に遷移する状態
-<output>    := [string]; ルール実行後に挿入される文字(列)(ひらがなで指定する)
-                 | [symbol]; ルール実行後に関数を実行する
+  <alist>     := nil | (<rule-cell>*)
+  <rule-cell> := (<method> . (<rule>*))
+  <rule>      := (<input> <next> <output>)
+  <method>    := [symbol]; 入力方法の識別のためのシンボル
+  <input>     := [string]; ルール実行のために必要な入力
+  <next>      := [string]; ルール実行後に遷移する状態
+  <output>    := [string]; ルール実行後に挿入される文字(列)(ひらがなで指定する)
+                   | [symbol]; ルール実行後に関数を実行する
 
 <rule>の例:
   (\"a\" nil (\"あ ア\"))
@@ -327,11 +327,11 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
 RULE-LISTSを木の形にコンパイルする。
 
 Treeは次の形式である:
-<tree> := nil | (<key> <str> <next> <out> (<tree>*))
-<key>  := nil | [char];   該当の木に遷移するキー
-<str>  := nil | [string]; 該当の葉に遷移するために必要な全体のキー
-<next> := nil | [string]; 該当の葉に遷移した後に遷移する状態
-<out>  := nil | [string]; 該当の葉に遷移した時に挿入される文字(列)
+  <tree> := nil | (<key> <str> <next> <out> (<tree>*))
+  <key>  := nil | [char];   該当の木に遷移するキー
+  <str>  := nil | [string]; 該当の葉に遷移するために必要な全体のキー
+  <next> := nil | [string]; 該当の葉に遷移した後に遷移する状態
+  <out>  := nil | [string]; 該当の葉に遷移した時に挿入される文字(列)
 
 なお、<key>がnilの場合、その葉は根であり、
 <str>や<out>がnilの場合、その葉によって挿入される文字列はないことを示す。"

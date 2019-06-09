@@ -68,9 +68,9 @@
 
 TREEを`liskk-rule-roman-kana-base-alist'が要求するS式に変換する。
 TREEは次の形式である:
-<tree>   := (<input> (<output>5) <tree>*)
-<input>  := [string]; 一文字のキー入力の断片
-<output> := nil | [string]; 「a i u e o」段に対応する出力文字"
+  <tree>   := (<input> (<output>5) <tree>*)
+  <input>  := [string]; 一文字のキー入力の断片
+  <output> := nil | [string]; 「a i u e o」段に対応する出力文字"
   (let ((str     (concat basestr (pop tree)))
         (current (pop tree))
         (next    tree))
