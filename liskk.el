@@ -221,12 +221,16 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 (defun liskk-erase-prefix ()
   "Remove overlay prefix.")
 
-(defun liskk-insert ()
-  "LISKK version of `self-insert-command'.")
+(defun liskk-self-insert (arg)
+  "LISKK version of `self-insert-command'."
+  (interactive "p")
+  (with-current-buffer (get-buffer-create "*liskk-debug*")
+    (insert arg)
+    (insert "\n")))
 
 (defun liskk-kana-insert (kana)
   "Insert kana."
-  (with-current-buffer "*liskk-debug*"
+  (with-current-buffer (get-buffer-create "*liskk-debug*")
     (insert kana)
     (insert "\n")))
 
