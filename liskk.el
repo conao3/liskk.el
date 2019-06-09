@@ -70,7 +70,22 @@
   :type 'string
   :group 'liskk)
 
-(defcustom skk-preface-dict-path-list
+(defcustom liskk-preface-dict-buffer-name " *liskk-preface-dict-%s*"
+  "Buffer name for `liskk-preface-dict-path-list'."
+  :type 'string
+  :group 'liskk)
+
+(defcustom liskk-personal-dict-buffer-name " *liskk-personal-dict*"
+  "Buffer name for `liskk-personal-dict-path'."
+  :type 'string
+  :group 'liskk)
+
+(defcustom liskk-shared-dict-buffer-name " *liskk-shared-dict-%s*"
+  "Buffer name for `liskk-shared-dict-path-list'."
+  :type 'string
+  :group 'liskk)
+
+(defcustom liskk-preface-dict-path-list
   (list (locate-user-emacs-file "liskk/dict/preface.L"))
   "Dictionary list to search before searching the personal dictionary.
 個人辞書の検索の前に検索する辞書。
@@ -79,7 +94,7 @@ Non-nilであれば、指定された辞書を検索のためバッファに読�
   :type 'sexp
   :group 'liskk)
 
-(defcustom skk-personal-dict-path
+(defcustom liskk-personal-dict-path
   (locate-user-emacs-file "liskk/dict/personal.L")
   "Personal dictionary file path and save path.
 個人辞書のパス。また、このパスに個人辞書を保存する。
@@ -87,7 +102,7 @@ Non-nilであれば、指定された辞書を検索のためバッファに読�
   :type 'file
   :group 'liskk)
 
-(defcustom skk-public-dict-path-list
+(defcustom liskk-shared-dict-path-list
   (list (locate-user-emacs-file "liskk/dict/SKK-JISYO.L"))
   "Dictionary list to search after searching the personal dictionary.
 個人辞書の検索の後に検索する辞書。
@@ -202,6 +217,27 @@ NEXT-STATE に状態を移したうえで、入力待ち状態となる。
 ;;  Implemention
 ;;
 
+(defun liskk-prepare-dict ()
+  "Prepare dictionary."
+  (when liskk-preface-dict-path-list
+    (dolist (num (number-sequence 1 (length liskk-preface-dict-path-list)))
+      (with-current-buffer (get-buffer-create
+                            (format liskk-preface-dict-buffer-name num))
+        (erase-buffer)
+        (insert-file-contents (nth (1- num) liskk-preface-dict-path-list)))))
+
+  (when liskk-personal-dict-path
+    (with-current-buffer (get-buffer-create liskk-personal-dict-buffer-name)
+      (erase-buffer)
+      (insert-file-contents liskk-personal-dict-path)))
+
+  (when liskk-shared-dict-path-list
+    (dolist (num (number-sequence 1 (length liskk-shared-dict-path-list)))
+      (with-current-buffer (get-buffer-create
+                            (format liskk-shared-dict-buffer-name num))
+        (erase-buffer)
+        (insert-file-contents (nth (1- num) liskk-shared-dict-path-list))))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  Minor-mode
@@ -214,7 +250,10 @@ NEXT-STATE に状態を移したうえで、入力待ち状態となる。
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
   :require 'liskk
   :lighter liskk-mode-base-lighter
-  :group 'liskk)
+  :group 'liskk
+  (if liskk-mode
+      (progn
+        (liskk-prepare-dict))))
 
 (provide 'liskk)
 ;;; liskk.el ends here
