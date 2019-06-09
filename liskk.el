@@ -70,6 +70,32 @@
   :type 'string
   :group 'liskk)
 
+(defcustom skk-preface-dict-path-list
+  (list (locate-user-emacs-file "liskk/dict/preface.L"))
+  "Dictionary list to search before searching the personal dictionary.
+個人辞書の検索の前に検索する辞書。
+見出し語は、ソートされていなければならない。
+Non-nilであれば、指定された辞書を検索のためバッファに読み込み、検索を行う。"
+  :type 'sexp
+  :group 'liskk)
+
+(defcustom skk-personal-dict-path
+  (locate-user-emacs-file "liskk/dict/personal.L")
+  "Personal dictionary file path and save path.
+個人辞書のパス。また、このパスに個人辞書を保存する。
+見出し語は、ソートされていなければならない。 nilの場合、個人辞書の保存を行わない。"
+  :type 'file
+  :group 'liskk)
+
+(defcustom skk-public-dict-path-list
+  (list (locate-user-emacs-file "liskk/dict/SKK-JISYO.L"))
+  "Dictionary list to search after searching the personal dictionary.
+個人辞書の検索の後に検索する辞書。
+見出し語は、ソートされていなければならない。
+Non-nilであれば、指定された辞書を検索のためバッファに読み込み、検索を行う。"
+  :type 'sexp
+  :group 'liskk)
+
 (defconst liskk-rule-roman-kana-base-alist
   `(roman . ,liskk-rule-roman-kana-base)
   "The conversion rule roman to kana.
