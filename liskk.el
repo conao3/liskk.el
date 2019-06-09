@@ -385,6 +385,7 @@ Treeは次の形式である:
   :require 'liskk
   :lighter liskk-mode-base-lighter
   :group 'liskk
+  :keymap liskk-mode-map
   (unless liskk-initialize-p
     (liskk-prepare-dict)
     (liskk-compile-rule-tree-make 'roman)
