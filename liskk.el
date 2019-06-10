@@ -303,6 +303,28 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
 
 という形になります.
 
+内部形式では次のように表現されます。簡便のために引用符を省略します
+
+(let ((liskk-rule-tree '(nil nil nil nil nil)))
+      (mapc
+       (lambda (elm)
+         (liskk-compile-rule-tree-add liskk-rule-tree (car elm) elm))
+       (reverse '((a nil あ)
+                  (n nil ん)
+                  (nn nil ん)
+                  (na nil な)
+                  (ta nil た)
+                  (tt t っ))))
+      liskk-rule-tree)
+;; => (nil nil nil nil
+;;         ((97 a nil あ nil)
+;;          (110 n nil ん
+;;               ((110 nn nil ん nil)
+;;                (97 na nil な nil)))
+;;          (116 t nil nil
+;;               ((97 ta nil た nil)
+;;                (116 tt t っ nil)))))
+
 初期状態(木の根)で `a' を入力すると, 木の根から「あ」に移動します.
 次にどのような入力が来ても,それより下に辿れないので, 「あ」を出力し
 て根に戻ります. ルールに次状態が設定されている場合は, 設定されている
