@@ -34,11 +34,17 @@
 ;;  Test utility
 ;;
 
+(defun liskk-debug-clean ()
+  (interactive)
+  (with-current-buffer (get-buffer-create "*liskk-debug*")
+    (erase-buffer)))
+
 (define-minor-mode liskk-debug-mode
   "Debug mode for `liskk-mode'."
   :require 'liskk
   :lighter " liskk-debug"
   :group 'liskk
+  :keymap `((,(kbd "M-<f12>") . liskk-debug-clean))
   (or liskk-mode (liskk-mode +1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
