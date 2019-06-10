@@ -26,7 +26,7 @@ EXPECT_EMACS  += 26.1 26.2
 
 ALL_EMACS    := $(filter $(EMACS_RAW),$(EXPECT_EMACS:%=emacs-%))
 
-DEPENDS      :=
+DEPENDS      := ov
 
 TESTFILE     := liskk-tests.el
 ELS          := liskk.el
@@ -102,3 +102,8 @@ clean:
 #
 #  depend files
 #
+
+ov:
+	curl -L https://github.com/ShingoFukuyama/ov.el/archive/master.tar.gz > $@.tar.gz
+	mkdir $@ && tar xf $@.tar.gz -C $@ --strip-components 1
+	rm -rf $@.tar.gz

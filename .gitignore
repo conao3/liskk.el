@@ -6,3 +6,9 @@
 
 # Emacs Lisp compiled files
 *.elc
+
+# dependency files
+/ov
+
+# archive files
+*.tar.gz
