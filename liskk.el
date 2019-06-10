@@ -256,7 +256,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
     (insert (nth 3 node)))
   (when (nth 2 node)
     (dolist (key (split-string (nth 2 node) "" 'omit))
-      (liskk-kana-input key))))
+      (liskk-kana-input (string-to-char key)))))
 
 (defvar liskk-current-rule-node nil)
 
