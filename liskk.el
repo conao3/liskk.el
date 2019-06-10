@@ -348,6 +348,8 @@ Treeは次の形式である:
        (let ((filename (file-name-nondirectory el)))
          (when (and (not (file-readable-p el))
                     (member filename liskk-well-known-dictionary-name))
+           (or (file-directory-p (file-name-directory el))
+               (mkdir (file-name-directory el) 'parent))
            (with-temp-file el
              (url-insert-file-contents
               (format liskk-dict-download-url filename))))))
