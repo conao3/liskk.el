@@ -241,11 +241,16 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
          (liskk-ascii-mode)
          (liskk-abbrev-mode))))))
 
-(defun liskk-kana-insert (kana)
+(defun liskk-kana-insert (node)
   "Insert kana."
   (with-current-buffer (get-buffer-create "*liskk-debug*")
     (goto-char (point-max))
-    (insert (format "kana-insert: %s\n" kana))))
+    (insert (format "kana-insert: %s\n"
+                    (truncate-string-to-width (prin1-to-string node) 60))))
+  (liskk-erase-prefix)
+  (liskk-kana-insert (nth 3 node))
+  (dolist (key (split-string "" (nth 2 node) 'omit))
+    (liskk-kana-input key)))
 
 (defvar liskk-current-rule-node nil)
 
@@ -308,17 +313,20 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
 
   ;; 現在の葉から次の状態に遷移しようとする
   (if (assoc key (nth 4 liskk-current-rule-node))
+      (progn
+        ;; 次の状態に遷移できた場合。 状態を更新する
+        (setq liskk-current-rule-node (assoc key (nth 4 liskk-current-rule-node)))
 
-      ;; 次の状態に遷移できた場合。 状態を更新する
-      (setq liskk-current-rule-node (assoc key (nth 4 liskk-current-rule-node)))
+        ;; 次の状態がない場合、変換前の英字を消して、現在の葉の文字列を挿入し、根に戻る
+        ;; 葉に次状態の指定があれば、それを実行する。
+        (unless (nth 4 liskk-current-rule-node)
+          (liskk-kana-insert liskk-current-rule-node)
+          (setq liskk-current-rule-node liskk-rule-tree)))
 
-    ;; 次の状態に遷移できない。 変換前の英字を消して、現在の葉の文字列を挿入する。
+    ;; 次の状態に遷移できない。 変換前の英字を消して、現在の葉の文字列を挿入し、根に戻る
     ;; 葉に次状態の指定があれば、それを実行する。
-    (liskk-erase-prefix)
-    (liskk-kana-insert (nth 3 liskk-current-rule-node))
-    (setq liskk-current-rule-node liskk-rule-tree)
-    (dolist (key (split-string "" (nth 2 liskk-current-rule-node) 'omit))
-      (liskk-kana-input key))))
+    (liskk-kana-insert liskk-current-rule-node)
+    (setq liskk-current-rule-node liskk-rule-tree)))
 
 (defun liskk-compile-rule-tree-add (current-node str node)
   "Add NODE and STR to CURRENT-NODE."
