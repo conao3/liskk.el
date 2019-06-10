@@ -331,7 +331,14 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
     ;; 次の状態に遷移できない。 変換前の英字を消して、現在の葉の文字列を挿入し、根に戻る
     ;; 葉に次状態の指定があれば、それを実行する。
     (liskk-kana-insert liskk-current-rule-node)
-    (setq liskk-current-rule-node liskk-rule-tree)))
+    (setq liskk-current-rule-node liskk-rule-tree))
+
+  (when liskk-debug-mode
+    (with-current-buffer (get-buffer-create "*liskk-debug*")
+      (goto-char (point-max))
+      (insert (format "moved-state: %s\n\n"
+                      (truncate-string-to-width
+                       (prin1-to-string liskk-current-rule-node) 60))))))
 
 (defun liskk-compile-rule-tree-add (current-node str node)
   "Add NODE and STR to CURRENT-NODE."
