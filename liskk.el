@@ -224,11 +224,17 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 (defun liskk-self-insert (arg)
   "LISKK version of `self-insert-command'."
   (interactive "p")
-  (when (< 0 arg)
-    (dotimes (i arg)
-      (with-current-buffer (get-buffer-create "*liskk-debug*")
-        (goto-char (point-max))
-        (insert (format "self-insert(%d): %s\n" i last-command-event))))))
+  (let ((key last-command-event))
+    (when (< 0 arg)
+      (dotimes (i arg)
+        (with-current-buffer (get-buffer-create "*liskk-debug*")
+          (goto-char (point-max))
+          (insert (format "self-insert(%d): %s\n" i key)))
+        (cond
+         (liskk-kana-mode
+          (liskk-kana-input key))
+         (liskk-ascii-mode)
+         (liskk-abbrev-mode))))))
 
 (defun liskk-kana-insert (kana)
   "Insert kana."
