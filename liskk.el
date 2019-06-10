@@ -321,21 +321,32 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
   ;; 現在の葉から次の状態に遷移しようとする
   (if (assoc key (nth 4 liskk-current-rule-node))
       (progn
-        ;; 次の状態に遷移できた場合。 状態を更新する
+        ;; 次の状態に遷移できた
+        ;;  - 状態を更新する
         (setq liskk-current-rule-node (assoc key (nth 4 liskk-current-rule-node)))
 
-        ;; 次の状態がない場合、変換前の英字を消して、現在の葉の文字列を挿入し、根に戻る
-        ;; 葉に次状態の指定があれば、それを実行する。
+        ;; 次の状態がない
+        ;;  - 根に戻る
+        ;;  - 最終の状態で`liskk-kana-insert'を実行する
+        ;;    - 変換前の英字を消す
+        ;;    - 現在の葉の文字列を挿入する
+        ;;    - 葉に次状態の指定があれば、それを処理器に投入する
         (unless (nth 4 liskk-current-rule-node)
           (let ((node liskk-current-rule-node))
             (setq liskk-current-rule-node nil)
             (liskk-kana-insert node))))
 
-    ;; 次の状態に遷移できない。 変換前の英字を消して、現在の葉の文字列を挿入し、根に戻る
-    ;; 葉に次状態の指定があれば、それを実行する。
+    ;; 次の状態に遷移できない
+    ;;   - 根に戻る
+    ;;   - 最終の状態で`liskk-kana-insert'を実行する
+    ;;     - 変換前の英字を消す
+    ;;     - 現在の葉の文字列を挿入する
+    ;;     - 葉に次状態の指定があれば、それを処理器に投入する
+    ;;   - 入力されたキーを、次のローマ字列として処理器に投入する
     (let ((node liskk-current-rule-node))
       (setq liskk-current-rule-node nil)
-      (liskk-kana-insert node)))
+      (liskk-kana-insert node)
+      (liskk-kana-input key)))
 
   (when liskk-debug-mode
     (with-current-buffer (get-buffer-create "*liskk-debug*")
