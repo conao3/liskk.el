@@ -67,18 +67,8 @@
   :type 'string
   :group 'liskk)
 
-(defcustom liskk-preface-dict-buffer-name " *liskk-preface-dict-%s*"
-  "Buffer name for `liskk-preface-dict-path-list'."
-  :type 'string
-  :group 'liskk)
-
-(defcustom liskk-personal-dict-buffer-name " *liskk-personal-dict*"
-  "Buffer name for `liskk-personal-dict-path'."
-  :type 'string
-  :group 'liskk)
-
-(defcustom liskk-shared-dict-buffer-name " *liskk-shared-dict-%s*"
-  "Buffer name for `liskk-shared-dict-path-list'."
+(defcustom liskk-dict-buffer-name " *liskk-dict-%s*"
+  "Buffer name for `liskk-mode' dictionary buffer."
   :type 'string
   :group 'liskk)
 
@@ -351,28 +341,18 @@ Treeは次の形式である:
            (or (file-directory-p (file-name-directory el))
                (mkdir (file-name-directory el) 'parent))
            (with-temp-file el
-             (url-insert-file-contents
-              (format liskk-dict-download-url filename))))))
+             (url-insert-file-contents (format liskk-dict-download-url filename))))))
      (symbol-value elm)))
 
-  (when liskk-preface-dict-path-list
-    (dolist (num (number-sequence 1 (length liskk-preface-dict-path-list)))
-      (with-current-buffer (get-buffer-create
-                            (format liskk-preface-dict-buffer-name num))
-        (erase-buffer)
-        (insert-file-contents (nth (1- num) liskk-preface-dict-path-list)))))
-
-  (when liskk-personal-dict-path
-    (with-current-buffer (get-buffer-create liskk-personal-dict-buffer-name)
-      (erase-buffer)
-      (insert-file-contents liskk-personal-dict-path)))
-
-  (when liskk-shared-dict-path-list
-    (dolist (num (number-sequence 1 (length liskk-shared-dict-path-list)))
-      (with-current-buffer (get-buffer-create
-                            (format liskk-shared-dict-buffer-name num))
-        (erase-buffer)
-        (insert-file-contents (nth (1- num) liskk-shared-dict-path-list))))))
+  (let ((num 0))
+    (dolist (elm (append liskk-preface-dict-path-list
+                         (list liskk-personal-dict-path) ; not list
+                         liskk-shared-dict-path-list))
+      (setq num (1+ num))
+      (when (file-readable-p elm)
+        (with-current-buffer (get-buffer-create (format liskk-dict-buffer-name elm))
+          (erase-buffer)
+          (insert-file-contents elm))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
