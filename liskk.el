@@ -423,7 +423,15 @@ Treeは次の形式である:
     (setq liskk-initialize-p t))
 
   (if liskk-mode
-      (progn)))
+      (progn
+        (eval `(,(intern (format "liskk-kana-mode")) +1))
+        (setq-local liskk-internal-type 0))
+    (eval
+     `(progn
+        ,@(mapcar
+           (lambda (elm)
+             `(,(intern (format "liskk-%s-mode" (symbol-name elm))) -1))
+           liskk-internal-modes)))))
 
 (provide 'liskk)
 ;;; liskk.el ends here
