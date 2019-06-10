@@ -237,7 +237,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
         (when liskk-debug-mode
           (with-current-buffer (get-buffer-create "*liskk-debug*")
             (goto-char (point-max))
-            (insert (format "self-insert(%d): %s\n" i key))))
+            (insert (format "self-insert(%d): %c\n" i key))))
         (cond
          (liskk-kana-mode
           (liskk-kana-input key))
@@ -307,7 +307,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
   (when liskk-debug-mode
     (with-current-buffer (get-buffer-create "*liskk-debug*")
       (goto-char (point-max))
-      (insert (format "kana-input: %s\n" key))
+      (insert (format "kana-input: %c\n" key))
       (insert (format "current-state: %s\n"
                       (truncate-string-to-width
                        (prin1-to-string liskk-current-rule-node) 60)))))
