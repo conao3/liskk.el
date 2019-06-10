@@ -253,7 +253,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
                       (truncate-string-to-width (prin1-to-string node) 60)))))
   (liskk-erase-prefix)
   (when (nth 3 node) (insert (nth 3 node)))
-  (dolist (key (split-string "" (nth 2 node) 'omit))
+  (dolist (key (split-string (nth 2 node) "" 'omit))
     (liskk-kana-input key)))
 
 (defvar liskk-current-rule-node nil)
