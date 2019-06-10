@@ -224,7 +224,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
     (dotimes (i 95)
       (define-key keymap (char-to-string (+ 32 i)) #'liskk-self-insert))
     keymap)
-  "Keymap for `liskk-zbbrev-mode'.")
+  "Keymap for `liskk-abbrev-mode'.")
 
 (defun liskk-erase-prefix ()
   "Remove overlay prefix.")
