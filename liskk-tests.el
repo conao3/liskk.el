@@ -141,14 +141,14 @@
             (117 "u" nil "う" nil)
             (101 "e" nil "え" nil)
             (111 "o" nil "お" nil)
-            (107 nil nil nil
+            (107 "k" nil nil
                  ((107 "kk" "k" "っ" nil)
                   (97 "ka" nil "か" nil)
                   (105 "ki" nil "き" nil)
                   (117 "ku" nil "く" nil)
                   (101 "ke" nil "け" nil)
                   (111 "ko" nil "こ" nil)
-                  (121 nil nil nil
+                  (121 "y" nil nil
                        ((97 "kya" nil "きゃ" nil)
                         (105 "kyi" nil "きぃ" nil)
                         (117 "kyu" nil "きゅ" nil)

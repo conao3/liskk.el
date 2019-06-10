@@ -377,7 +377,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
       (setf (nth 4 current-node)
             (append (if statep
                         (list (list nkey nstr nnext nout nil))
-                      (list (list nkey nil nnext nil nil)))
+                      (list (list nkey (char-to-string nkey) nil nil nil)))
                     (nth 4 current-node)))
       (unless statep
         (liskk-compile-rule-tree-add (assoc nkey (nth 4 current-node)) nkeyrest node)))))
