@@ -50,7 +50,6 @@
   :group 'liskk)
 
 (defvar liskk-internal-modes '(kana ascii abbrev))
-(defvar-local liskk-internal-mode 'kana)
 (defvar-local liskk-internal-type 0)
 
 (defcustom liskk-kana-mode-lighter '("[かな]" "[カナ]" "[半カナ]")
@@ -424,8 +423,7 @@ Treeは次の形式である:
     (setq liskk-initialize-p t))
 
   (if liskk-mode
-      (progn
-        (setq-local liskk-internal-mode 'kana))))
+      (progn)))
 
 (provide 'liskk)
 ;;; liskk.el ends here
