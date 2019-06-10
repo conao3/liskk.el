@@ -31,6 +31,18 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;;  Test utility
+;;
+
+(define-minor-mode liskk-debug-mode
+  "Debug mode for `liskk-mode'."
+  :require 'liskk
+  :lighter " liskk-debug"
+  :group 'liskk
+  (or liskk-mode (liskk-mode +1)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;;  Test definition
 ;;
 
