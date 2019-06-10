@@ -248,7 +248,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
     (insert (format "kana-insert: %s\n"
                     (truncate-string-to-width (prin1-to-string node) 60))))
   (liskk-erase-prefix)
-  (liskk-kana-insert (nth 3 node))
+  (insert (nth 3 node))
   (dolist (key (split-string "" (nth 2 node) 'omit))
     (liskk-kana-input key)))
 
