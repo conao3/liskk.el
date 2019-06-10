@@ -224,15 +224,17 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 (defun liskk-self-insert (arg)
   "LISKK version of `self-insert-command'."
   (interactive "p")
-  (with-current-buffer (get-buffer-create "*liskk-debug*")
-    (insert arg)
-    (insert "\n")))
+  (when (< 0 arg)
+    (dotimes (i arg)
+      (with-current-buffer (get-buffer-create "*liskk-debug*")
+        (goto-char (point-max))
+        (insert (format "self-insert(%d): %s\n" i last-command-event))))))
 
 (defun liskk-kana-insert (kana)
   "Insert kana."
   (with-current-buffer (get-buffer-create "*liskk-debug*")
-    (insert kana)
-    (insert "\n")))
+    (goto-char (point-max))
+    (insert (format "kana-insert: %s\n" kana))))
 
 (defvar liskk-current-rule-node nil)
 
@@ -282,6 +284,12 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
 が入力されればそれより下に辿れるので次の入力を見るまでまだ出力しませ
 ん. 次に `t' が入力された場合は, `t' では下に辿れないので,「ん」を出
 力して `t' をキューに戻します."
+  (with-current-buffer (get-buffer-create "*liskk-debug*")
+    (goto-char (point-max))
+    (insert (format "kana-input: %s\n" key))
+    (insert (format "current-state: %s\n"
+                    (truncate-string-to-width
+                     (prin1-to-string liskk-current-rule-node) 60))))
 
   ;; 状態がない場合、根からもう一度処理を始める。 (現在の状態が強制リセットされた場合など)
   (unless liskk-current-rule-node
