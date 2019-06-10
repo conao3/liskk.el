@@ -351,7 +351,7 @@ Treeは次の形式である:
            (with-temp-file el
              (url-insert-file-contents
               (format liskk-dict-download-url filename))))))
-     elm))
+     (symbol-value elm)))
 
   (when liskk-preface-dict-path-list
     (dolist (num (number-sequence 1 (length liskk-preface-dict-path-list)))
