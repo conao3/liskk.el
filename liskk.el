@@ -44,11 +44,15 @@
 (defvar liskk-initialize-p nil)
 (defvar liskk-rule-tree nil)
 
-;; kana katakana ascii zen-ascii abbrev
+(defcustom liskk-mode-base-lighter " liskk"
+  "Base lighter for `liskk-mode'."
+  :type 'string
+  :group 'liskk)
+
+;; katakana ascii zen-ascii abbrev
 (defvar-local liskk-internal-mode 'kana)
 
-(defvar liskk-internal-modes '((liskk-mode           . " liskk")
-                               (liskk-kana-mode      . "[かな]")
+(defvar liskk-internal-modes '((liskk-kana-mode      . "[かな]")
                                (liskk-katakana-mode  . "[カナ]")
                                (liskk-ascii-mode     . "[半英]")
                                (liskk-zen-ascii-mode . "[全英]")
@@ -61,13 +65,13 @@
          (let ((mode-name (symbol-name (car elm)))
                (lighter   (cdr elm)))
            `((defcustom ,(intern (format "%s-lighter" mode-name)) ,lighter
-               ,(format "The lighter for %s." mode-name)
+               ,(format "The lighter for internal %s for `liskk-mode'." mode-name)
                :type 'string
                :group 'liskk)
              (defvar ,(intern (format "%s-map" mode-name)) (make-sparse-keymap)
-               ,(format "Keymap for %s." mode-name))
+               ,(format "Keymap for internal %s for `liskk-mode'." mode-name))
              (defvar ,(intern (format "%s-hook" mode-name)) nil
-               ,(format "Hook when %s turns on." mode-name)))))
+               ,(format "Hook for when internal %s turn on for `liskk-mode'." mode-name)))))
        liskk-internal-modes)))
 
 (defcustom liskk-preface-dict-buffer-name " *liskk-preface-dict-%s*"
