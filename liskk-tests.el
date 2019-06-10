@@ -36,7 +36,7 @@
 
 (defun liskk-debug-clean ()
   (interactive)
-  (with-current-buffer (get-buffer-create "*liskk-debug*")
+  (with-current-buffer (get-buffer-create liskk-debug-buffer-name)
     (erase-buffer)))
 
 (define-minor-mode liskk-debug-mode

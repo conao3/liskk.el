@@ -69,6 +69,11 @@
   :type 'string
   :group 'liskk)
 
+(defcustom liskk-debug-buffer-name "*liskk-debug*"
+  "Buffer name for `liskk-mode' debug buffer."
+  :type 'string
+  :group 'liskk)
+
 (defvar liskk-well-known-dictionary-name
   '("SKK-JISYO.L" "SKK-JISYO.ML" "SKK-JISYO.M" "SKK-JISYO.S"
     "SKK-JISYO.JIS2" "SKK-JISYO.JIS3_4" "SKK-JISYO.pubdic+"
@@ -236,7 +241,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
     (when (< 0 arg)
       (dotimes (i arg)
         (when liskk-debug-mode
-          (with-current-buffer (get-buffer-create "*liskk-debug*")
+          (with-current-buffer (get-buffer-create liskk-debug-buffer-name)
             (goto-char (point-max))
             (insert (format "self-insert(%d): %c\n" i key))))
         (cond
@@ -248,7 +253,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 (defun liskk-kana-insert (node)
   "Insert kana."
   (when liskk-debug-mode
-    (with-current-buffer (get-buffer-create "*liskk-debug*")
+    (with-current-buffer (get-buffer-create liskk-debug-buffer-name)
       (goto-char (point-max))
       (insert (format "kana-insert: %s\n"
                       (truncate-string-to-width (prin1-to-string node) 60)))))
@@ -308,7 +313,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
 ん. 次に `t' が入力された場合は, `t' では下に辿れないので,「ん」を出
 力して `t' をキューに戻します."
   (when liskk-debug-mode
-    (with-current-buffer (get-buffer-create "*liskk-debug*")
+    (with-current-buffer (get-buffer-create liskk-debug-buffer-name)
       (goto-char (point-max))
       (insert (format "kana-input: %c\n" key))
       (insert (format "current-state: %s\n"
@@ -351,7 +356,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
       (liskk-kana-input key)))
 
   (when liskk-debug-mode
-    (with-current-buffer (get-buffer-create "*liskk-debug*")
+    (with-current-buffer (get-buffer-create liskk-debug-buffer-name)
       (goto-char (point-max))
       (insert (format "moved-state: %s\n\n"
                       (truncate-string-to-width
