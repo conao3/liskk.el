@@ -386,7 +386,7 @@ Treeは次の形式である:
                          liskk-shared-dict-path-list))
       (setq num (1+ num))
       (when (file-readable-p elm)
-        (with-current-buffer (get-buffer-create (format liskk-dict-buffer-name elm))
+        (with-current-buffer (get-buffer-create (format liskk-dict-buffer-name num))
           (erase-buffer)
           (insert-file-contents elm))))))
 
