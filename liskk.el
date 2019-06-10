@@ -49,26 +49,24 @@
   :type 'string
   :group 'liskk)
 
-;; katakana ascii zen-ascii abbrev
+(defvar liskk-internal-modes '(kana ascii abbrev))
 (defvar-local liskk-internal-mode 'kana)
+(defvar-local liskk-internal-type 0)
 
-(defvar liskk-internal-modes '((liskk-kana-mode      . "[かな]")
-                               (liskk-katakana-mode  . "[カナ]")
-                               (liskk-ascii-mode     . "[半英]")
-                               (liskk-zen-ascii-mode . "[全英]")
-                               (liskk-abbrev-mode    . "[aあ]")))
+(defcustom liskk-kana-mode-lighter '("[かな]" "[カナ]" "[半カナ]")
+  "The lighter for internal `liskk-kana-mode' for `liskk-mode'."
+  :type 'string
+  :group 'liskk)
 
-(eval
- `(progn
-    ,@(mapcan
-       (lambda (elm)
-         (let ((mode-name (symbol-name (car elm)))
-               (lighter   (cdr elm)))
-           `((defcustom ,(intern (format "%s-lighter" mode-name)) ,lighter
-               ,(format "The lighter for internal %s for `liskk-mode'." mode-name)
-               :type 'string
-               :group 'liskk))))
-       liskk-internal-modes)))
+(defcustom liskk-ascii-mode-lighter '("[半英]" "[全英]")
+  "The lighter for internal `liskk-ascii-mode' for `liskk-mode'."
+  :type 'string
+  :group 'liskk)
+
+(defcustom liskk-abbrev-mode-lighter '("[aあ]")
+  "The lighter for internal `liskk-abbrev-mode' for `liskk-mode'."
+  :type 'string
+  :group 'liskk)
 
 (defcustom liskk-preface-dict-buffer-name " *liskk-preface-dict-%s*"
   "Buffer name for `liskk-preface-dict-path-list'."
@@ -386,14 +384,8 @@ Treeは次の形式である:
 (defvar liskk-kana-mode-map (make-sparse-keymap)
   "Keymap for `liskk-kana-mode'.")
 
-(defvar liskk-katakana-mode-map (make-sparse-keymap)
-  "Keymap for `liskk-katakana-mode'.")
-
 (defvar liskk-ascii-mode-map (make-sparse-keymap)
   "Keymap for `liskk-ascii-mode'.")
-
-(defvar liskk-zen-ascii-mode-map (make-sparse-keymap)
-  "Keymap for `liskk-zen-ascii-mode'.")
 
 (defvar liskk-abbrev-mode-map (make-sparse-keymap)
   "Keymap for `liskk-zbbrev-mode'.")
@@ -402,23 +394,23 @@ Treeは次の形式である:
  `(progn
     ,@(mapcar
        (lambda (elm)
-         `(define-minor-mode ,elm
-            ,(format "Internal minor-mode for `liskk-mode' to insert %s."
-                    (replace-regexp-in-string
-                     "[^-]*-\\([^ ]*\\)-mode" "\\1" (symbol-name elm)))
-            :require 'liskk
-            :lighter nil
-            :group 'liskk
-            :keymap ,(intern (format "%s-map" (symbol-name elm)))
-            (if elm
-                (progn
-                  (unless liskk-mode
-                    (liskk-mode +1) (,elm +1))
-                  ,@(mapcar
-                     (lambda (el) `(,el -1))
-                     (delq elm (mapcar #'car liskk-internal-modes))))
-              (liskk-erase-prefix))))
-       (mapcar #'car liskk-internal-modes))))
+         (let ((sym (intern (format "liskk-%s-mode" (symbol-name elm)))))
+           `(define-minor-mode ,sym
+              ,(format "Internal minor-mode for `liskk-mode' to insert %s." (symbol-name elm))
+              :require 'liskk
+              :lighter nil
+              :group 'liskk
+              :keymap ,(intern (format "liskk-%s-mode-map" (symbol-name elm)))
+              (if elm
+                  (progn
+                    (unless liskk-mode
+                      (liskk-mode +1) (,sym +1))
+                    ,@(mapcar
+                       (lambda (el)
+                         `(,(intern (format "liskk-%s-mode" (symbol-name el))) -1))
+                       (remove elm liskk-internal-modes)))
+                (liskk-erase-prefix)))))
+       liskk-internal-modes)))
 
 (define-minor-mode liskk-mode
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
