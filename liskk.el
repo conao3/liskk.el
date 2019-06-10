@@ -194,12 +194,29 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 ;;  Implemention
 ;;
 
-(defvar skk-mode-map)
-(defvar skk-kana-mode-map)
-(defvar skk-katakana-mode-map)
-(defvar skk-ascii-mode-map)
-(defvar skk-zen-ascii-mode-map)
-(defvar skk-abbrev-mode-map)
+(defvar liskk-mode-map (make-sparse-keymap)
+  "Keymap for `liskk-mode'.")
+
+(defvar liskk-kana-mode-map
+  (let ((keymap (make-sparse-keymap)))
+    (dotimes (i 95)
+      (define-key keymap (char-to-string (+ 32 i)) #'liskk-self-insert))
+    keymap)
+  "Keymap for `liskk-kana-mode'.")
+
+(defvar liskk-ascii-mode-map
+  (let ((keymap (make-sparse-keymap)))
+    (dotimes (i 95)
+      (define-key keymap (char-to-string (+ 32 i)) #'liskk-self-insert))
+    keymap)
+  "Keymap for `liskk-ascii-mode'.")
+
+(defvar liskk-abbrev-mode-map
+  (let ((keymap (make-sparse-keymap)))
+    (dotimes (i 95)
+      (define-key keymap (char-to-string (+ 32 i)) #'liskk-self-insert))
+    keymap)
+  "Keymap for `liskk-zbbrev-mode'.")
 
 (defun liskk-erase-prefix ()
   "Remove overlay prefix.")
@@ -358,18 +375,6 @@ Treeは次の形式である:
 ;;
 ;;  Minor-mode
 ;;
-
-(defvar liskk-mode-map (make-sparse-keymap)
-  "Keymap for `liskk-mode'.")
-
-(defvar liskk-kana-mode-map (make-sparse-keymap)
-  "Keymap for `liskk-kana-mode'.")
-
-(defvar liskk-ascii-mode-map (make-sparse-keymap)
-  "Keymap for `liskk-ascii-mode'.")
-
-(defvar liskk-abbrev-mode-map (make-sparse-keymap)
-  "Keymap for `liskk-zbbrev-mode'.")
 
 (eval
  `(progn
