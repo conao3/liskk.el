@@ -191,6 +191,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 ;;
 
 (defvar liskk-mode)
+(defvar liskk-debug-mode)
 (defvar liskk-kana-mode)
 (defvar liskk-ascii-mode)
 (defvar liskk-abbrev-mode)
@@ -198,6 +199,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 (defvar-local liskk-internal-type 0)
 
 (defvar liskk-rule-tree nil)
+
 
 (defvar liskk-mode-map (make-sparse-keymap)
   "Keymap for `liskk-mode'.")
@@ -232,9 +234,10 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
   (let ((key last-command-event))
     (when (< 0 arg)
       (dotimes (i arg)
-        (with-current-buffer (get-buffer-create "*liskk-debug*")
-          (goto-char (point-max))
-          (insert (format "self-insert(%d): %s\n" i key)))
+        (when liskk-debug-mode
+          (with-current-buffer (get-buffer-create "*liskk-debug*")
+            (goto-char (point-max))
+            (insert (format "self-insert(%d): %s\n" i key))))
         (cond
          (liskk-kana-mode
           (liskk-kana-input key))
@@ -243,10 +246,11 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 
 (defun liskk-kana-insert (node)
   "Insert kana."
-  (with-current-buffer (get-buffer-create "*liskk-debug*")
-    (goto-char (point-max))
-    (insert (format "kana-insert: %s\n"
-                    (truncate-string-to-width (prin1-to-string node) 60))))
+  (when liskk-debug-mode
+    (with-current-buffer (get-buffer-create "*liskk-debug*")
+      (goto-char (point-max))
+      (insert (format "kana-insert: %s\n"
+                      (truncate-string-to-width (prin1-to-string node) 60)))))
   (liskk-erase-prefix)
   (insert (nth 3 node))
   (dolist (key (split-string "" (nth 2 node) 'omit))
@@ -300,12 +304,13 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
 が入力されればそれより下に辿れるので次の入力を見るまでまだ出力しませ
 ん. 次に `t' が入力された場合は, `t' では下に辿れないので,「ん」を出
 力して `t' をキューに戻します."
-  (with-current-buffer (get-buffer-create "*liskk-debug*")
-    (goto-char (point-max))
-    (insert (format "kana-input: %s\n" key))
-    (insert (format "current-state: %s\n"
-                    (truncate-string-to-width
-                     (prin1-to-string liskk-current-rule-node) 60))))
+  (when liskk-debug-mode
+    (with-current-buffer (get-buffer-create "*liskk-debug*")
+      (goto-char (point-max))
+      (insert (format "kana-input: %s\n" key))
+      (insert (format "current-state: %s\n"
+                      (truncate-string-to-width
+                       (prin1-to-string liskk-current-rule-node) 60)))))
 
   ;; 状態がない場合、根からもう一度処理を始める。 (現在の状態が強制リセットされた場合など)
   (unless liskk-current-rule-node
@@ -424,6 +429,13 @@ Treeは次の形式である:
                        (remove elm liskk-internal-modes)))
                 (liskk-erase-prefix)))))
        liskk-internal-modes)))
+
+(define-minor-mode liskk-debug-mode
+  "Debug mode for `liskk-mode'."
+  :require 'liskk
+  :lighter " liskk-debug"
+  :group 'liskk
+  (or liskk-mode (liskk-mode +1)))
 
 (define-minor-mode liskk-mode
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
