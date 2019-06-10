@@ -67,11 +67,7 @@
            `((defcustom ,(intern (format "%s-lighter" mode-name)) ,lighter
                ,(format "The lighter for internal %s for `liskk-mode'." mode-name)
                :type 'string
-               :group 'liskk)
-             (defvar ,(intern (format "%s-map" mode-name)) (make-sparse-keymap)
-               ,(format "Keymap for internal %s for `liskk-mode'." mode-name))
-             (defvar ,(intern (format "%s-hook" mode-name)) nil
-               ,(format "Hook for when internal %s turn on for `liskk-mode'." mode-name)))))
+               :group 'liskk))))
        liskk-internal-modes)))
 
 (defcustom liskk-preface-dict-buffer-name " *liskk-preface-dict-%s*"
@@ -383,6 +379,46 @@ Treeは次の形式である:
 ;;
 ;;  Minor-mode
 ;;
+
+(defvar liskk-mode-map (make-sparse-keymap)
+  "Keymap for `liskk-mode'.")
+
+(defvar liskk-kana-mode-map (make-sparse-keymap)
+  "Keymap for `liskk-kana-mode'.")
+
+(defvar liskk-katakana-mode-map (make-sparse-keymap)
+  "Keymap for `liskk-katakana-mode'.")
+
+(defvar liskk-ascii-mode-map (make-sparse-keymap)
+  "Keymap for `liskk-ascii-mode'.")
+
+(defvar liskk-zen-ascii-mode-map (make-sparse-keymap)
+  "Keymap for `liskk-zen-ascii-mode'.")
+
+(defvar liskk-abbrev-mode-map (make-sparse-keymap)
+  "Keymap for `liskk-zbbrev-mode'.")
+
+(eval
+ `(progn
+    ,@(mapcar
+       (lambda (elm)
+         `(define-minor-mode ,elm
+            ,(format "Internal minor-mode for `liskk-mode' to insert %s."
+                    (replace-regexp-in-string
+                     "[^-]*-\\([^ ]*\\)-mode" "\\1" (symbol-name elm)))
+            :require 'liskk
+            :lighter nil
+            :group 'liskk
+            :keymap ,(intern (format "%s-map" (symbol-name elm)))
+            (if elm
+                (progn
+                  (unless liskk-mode
+                    (liskk-mode +1) (,elm +1))
+                  ,@(mapcar
+                     (lambda (el) `(,el -1))
+                     (delq elm (mapcar #'car liskk-internal-modes))))
+              (liskk-erase-prefix))))
+       (mapcar #'car liskk-internal-modes))))
 
 (define-minor-mode liskk-mode
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
