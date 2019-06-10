@@ -42,15 +42,11 @@
 ;;
 
 (defvar liskk-initialize-p nil)
-(defvar liskk-rule-tree nil)
 
 (defcustom liskk-mode-base-lighter " liskk"
   "Base lighter for `liskk-mode'."
   :type 'string
   :group 'liskk)
-
-(defvar liskk-internal-modes '(kana ascii abbrev))
-(defvar-local liskk-internal-type 0)
 
 (defcustom liskk-kana-mode-lighter '("[かな]" "[カナ]" "[半カナ]")
   "The lighter for internal `liskk-kana-mode' for `liskk-mode'."
@@ -193,6 +189,15 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 ;;
 ;;  Implemention
 ;;
+
+(defvar liskk-mode)
+(defvar liskk-kana-mode)
+(defvar liskk-ascii-mode)
+(defvar liskk-abbrev-mode)
+(defvar liskk-internal-modes '(kana ascii abbrev))
+(defvar-local liskk-internal-type 0)
+
+(defvar liskk-rule-tree nil)
 
 (defvar liskk-mode-map (make-sparse-keymap)
   "Keymap for `liskk-mode'.")
