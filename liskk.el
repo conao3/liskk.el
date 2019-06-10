@@ -382,7 +382,7 @@ Treeは次の形式である:
               :lighter nil
               :group 'liskk
               :keymap ,(intern (format "liskk-%s-mode-map" (symbol-name elm)))
-              (if elm
+              (if ,sym
                   (progn
                     (unless liskk-mode
                       (liskk-mode +1) (,sym +1))
