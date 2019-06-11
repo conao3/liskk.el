@@ -231,9 +231,6 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
     keymap)
   "Keymap for `liskk-abbrev-mode'.")
 
-(defun liskk-erase-prefix ()
-  "Remove overlay prefix.")
-
 (defun liskk-self-insert (arg)
   "LISKK version of `self-insert-command'."
   (interactive "p")
@@ -257,7 +254,6 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
       (goto-char (point-max))
       (insert (format "kana-insert: %s\n"
                       (truncate-string-to-width (prin1-to-string node) 60)))))
-  (liskk-erase-prefix)
   (when (nth 3 node)
     (insert (nth 3 node)))
   (when (nth 2 node)
@@ -265,6 +261,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
       (liskk-kana-input (string-to-char key)))))
 
 (defvar liskk-current-rule-node nil)
+(defvar-local liskk-ov-roman-fragment nil)
 
 (defun liskk-kana-input (key)
   "Input key and convert kana.
@@ -342,7 +339,8 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
                       (truncate-string-to-width
                        (prin1-to-string liskk-current-rule-node) 60)))))
 
-  ;; 状態がない場合、根からもう一度処理を始める。 (現在の状態が強制リセットされた場合など)
+  ;; 状態がない場合
+  ;;  - 現在の状態を根として処理を始める
   (unless liskk-current-rule-node
     (setq liskk-current-rule-node liskk-rule-tree))
 
@@ -351,29 +349,38 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
       (progn
         ;; 次の状態に遷移できた
         ;;  - 状態を更新する
+        ;;  - ローマ字断片オーバーレイの表示を更新する
         ;;  - 次状態遷移可能性を検証する
         (setq liskk-current-rule-node (assoc key (nth 4 liskk-current-rule-node)))
+        (ov-set liskk-ov-roman-fragment
+                'after-string
+                (propertize
+                 (concat
+                  (ov-val liskk-ov-roman-fragment 'after-string) (char-to-string key))
+                 'face 'font-lock-warning-face))
 
         (unless (nth 4 liskk-current-rule-node)
           ;; 遷移できたが、次の状態がない
           ;;  - 根に戻る
+          ;;  - ローマ字断片オーバーレイを消す
           ;;  - 最終の状態で`liskk-kana-insert'を実行する
-          ;;    - 変換前の英字を消す
           ;;    - 現在の葉の文字列を挿入する
           ;;    - 葉に次状態の指定があれば、それを処理器に投入する
           (let ((node liskk-current-rule-node))
             (setq liskk-current-rule-node nil)
+            (ov-set liskk-ov-roman-fragment 'after-string "")
             (liskk-kana-insert node))))
 
     (let ((node liskk-current-rule-node))
       ;; 次の状態に遷移できない
       ;;   - 根に戻る
+      ;;   - ローマ字断片オーバーレイを消す
       ;;   - 最終の状態で`liskk-kana-insert'を実行する
-      ;;     - 変換前の英字を消す
       ;;     - 現在の葉の文字列を挿入する
       ;;     - 葉に次状態の指定があれば、それを処理器に投入する
       ;;   - 入力されたキーを、次のローマ字列として処理器に投入する
       (setq liskk-current-rule-node nil)
+      (ov-set liskk-ov-roman-fragment 'after-string "")
       (liskk-kana-insert node)
       (liskk-kana-input key)))
 
@@ -480,7 +487,7 @@ Treeは次の形式である:
                        (lambda (el)
                          `(,(intern (format "liskk-%s-mode" (symbol-name el))) -1))
                        (remove elm liskk-internal-modes)))
-                (liskk-erase-prefix)))))
+                (ov-set liskk-ov-roman-fragment 'after-string "")))))
        liskk-internal-modes)))
 
 (define-minor-mode liskk-mode
@@ -497,7 +504,8 @@ Treeは次の形式である:
   (if liskk-mode
       (progn
         (eval `(,(intern (format "liskk-kana-mode")) +1))
-        (setq-local liskk-internal-type 0))
+        (setq-local liskk-internal-type 0)
+        (setq-local liskk-ov-roman-fragment (ov (point) (point))))
     (eval
      `(progn
         ,@(mapcar
