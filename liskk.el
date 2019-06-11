@@ -341,8 +341,10 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
 
   ;; 状態がない場合
   ;;  - 現在の状態を根として処理を始める
+  ;;  - ローマ字断片オーバーレイを移動させる
   (unless liskk-current-rule-node
-    (setq liskk-current-rule-node liskk-rule-tree))
+    (setq liskk-current-rule-node liskk-rule-tree)
+    (ov-move liskk-ov-roman-fragment (point) (point)))
 
   ;; 現在の葉から次の状態に遷移しようとする
   (if (assoc key (nth 4 liskk-current-rule-node))
