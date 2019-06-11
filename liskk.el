@@ -230,6 +230,8 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 (defvar liskk-abbrev-mode)
 (defvar liskk-internal-modes '(kana ascii abbrev))
 (defvar-local liskk-internal-type 0)
+(defvar liskk-current-rule-node nil)
+(defvar-local liskk-ov-roman-fragment nil)
 
 (defvar liskk-rule-tree nil)
 
@@ -290,9 +292,6 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
   (when (nth 2 node)
     (dolist (key (split-string (nth 2 node) "" 'omit))
       (liskk-kana-input (string-to-char key)))))
-
-(defvar liskk-current-rule-node nil)
-(defvar-local liskk-ov-roman-fragment nil)
 
 (defun liskk-kana-input (key)
   "Input key and convert kana.
