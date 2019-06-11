@@ -529,12 +529,12 @@ Treeは次の形式である:
                   (progn
                     (unless liskk-mode
                       (liskk-mode +1) (,sym +1))
-                    ;; renew roman-kana conversion state
-                    (setq-local liskk-current-rule-node nil)
                     ,@(mapcar
                        (lambda (el)
                          `(,(intern (format "liskk-%s-mode" (symbol-name el))) -1))
                        (remove elm liskk-internal-modes)))
+                ;; discard roman-kana conversion state
+                (setq-local liskk-current-rule-node nil)
                 (ov-set liskk-ov-roman-fragment 'after-string "")))))
        liskk-internal-modes)))
 
