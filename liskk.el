@@ -233,6 +233,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 (defvar-local liskk-current-rule-node nil)
 (defvar-local liskk-ov-roman-fragment nil)
 
+;; below variables are reused all `liskk-mode' process
 (defvar liskk-rule-tree nil)
 
 (defvar liskk-mode-map (make-sparse-keymap)
