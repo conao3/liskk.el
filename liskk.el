@@ -37,12 +37,18 @@
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
   :group 'lisp)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  Customization
 ;;
 
 (defvar liskk-initialize-p nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Minor-mode Lighter
+;;
 
 (defcustom liskk-mode-base-lighter " liskk"
   "Base lighter for `liskk-mode'."
@@ -64,6 +70,11 @@
   :type 'string
   :group 'liskk)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Buffer name
+;;
+
 (defcustom liskk-dict-buffer-name " *liskk-dict-%s*"
   "Buffer name for `liskk-mode' dictionary buffer."
   :type 'string
@@ -73,6 +84,11 @@
   "Buffer name for `liskk-mode' debug buffer."
   :type 'string
   :group 'liskk)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Dictionary
+;;
 
 (defvar liskk-well-known-dictionary-name
   '("SKK-JISYO.L" "SKK-JISYO.ML" "SKK-JISYO.M" "SKK-JISYO.S"
@@ -121,6 +137,11 @@ Non-nilであれば、指定された辞書を検索のためバッファに読�
 ファイルが存在しなければ自動的にダウンロードする。"
   :type 'sexp
   :group 'liskk)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Roman-kana conversion rule
+;;
 
 (defconst liskk-rule-roman-kana-base-alist
   `((roman . ,liskk-rule-roman-kana-base))
@@ -191,9 +212,15 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
                              (function :tag "関数を実行する")))))
   :group 'liskk)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  Implemention
+;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Declare symbols
 ;;
 
 (defvar liskk-mode)
@@ -205,7 +232,6 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 (defvar-local liskk-internal-type 0)
 
 (defvar liskk-rule-tree nil)
-
 
 (defvar liskk-mode-map (make-sparse-keymap)
   "Keymap for `liskk-mode'.")
@@ -230,6 +256,11 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
       (define-key keymap (char-to-string (+ 32 i)) #'liskk-self-insert))
     keymap)
   "Keymap for `liskk-abbrev-mode'.")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  liskk main routine
+;;
 
 (defun liskk-self-insert (arg)
   "LISKK version of `self-insert-command'."
@@ -393,6 +424,11 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
                       (truncate-string-to-width
                        (prin1-to-string liskk-current-rule-node) 60))))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Roman-kana rule
+;;
+
 (defun liskk-compile-rule-tree-add (current-node str node)
   "Add NODE and STR to CURRENT-NODE."
   (let* ((nkey     (aref str 0))
@@ -439,6 +475,11 @@ Treeは次の形式である:
                           (liskk-alist-get method liskk-rule-roman-kana-alist))))
   liskk-rule-tree)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Dictionary
+;;
+
 (defun liskk-prepare-dict ()
   "Prepare dictionary."
   (dolist (elm '(liskk-preface-dict-path-list liskk-shared-dict-path-list))
@@ -463,6 +504,7 @@ Treeは次の形式である:
           (erase-buffer)
           (insert-file-contents elm))))))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  Minor-mode

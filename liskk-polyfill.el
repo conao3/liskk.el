@@ -26,6 +26,12 @@
 
 ;;; Code:
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  General list functions
+;;
+
 (defun leaf-mapcaappend (func seq &rest rest)
   "Another implementation for `mapcan' for FUNC SEQ REST.
 `mapcan' uses `nconc', but Emacs-22 doesn't support it."
@@ -34,6 +40,12 @@
 
 (unless (fboundp 'mapcan)
   (defalias 'mapcan 'leaf-mapcaappend))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  General alist functions
+;;
 
 (defalias 'liskk-alist-get 'alist-get)
 
