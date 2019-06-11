@@ -376,8 +376,8 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
                        (prin1-to-string liskk-current-rule-node) 60)))))
 
   ;; 状態がない場合
-  ;;  - 現在の状態を根として処理を始める
-  ;;  - ローマ字断片オーバーレイを移動させる
+  ;;   - 現在の状態を根として処理を始める
+  ;;   - ローマ字断片オーバーレイを移動させる
   (unless liskk-current-rule-node
     (setq-local liskk-current-rule-node liskk-rule-tree)
     (liskk-ov-move-here liskk-ov-roman-fragment (point)))
@@ -386,9 +386,9 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
   (if (assoc key (nth 4 liskk-current-rule-node))
       (progn
         ;; 次の状態に遷移できた
-        ;;  - 状態を更新する
-        ;;  - ローマ字断片オーバーレイの表示を更新する
-        ;;  - 次状態遷移可能性を検証する
+        ;;   - 状態を更新する
+        ;;   - ローマ字断片オーバーレイの表示を更新する
+        ;;   - 次状態遷移可能性を検証する
         (setq-local liskk-current-rule-node (assoc key (nth 4 liskk-current-rule-node)))
         (ov-set liskk-ov-roman-fragment
                 'after-string
@@ -399,11 +399,11 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
 
         (unless (nth 4 liskk-current-rule-node)
           ;; 遷移できたが、次の状態がない
-          ;;  - 根に戻る
-          ;;  - ローマ字断片オーバーレイを消す
-          ;;  - 最終の状態で`liskk-kana-insert'を実行する
-          ;;    - 現在の葉の文字列を挿入する
-          ;;    - 葉に次状態の指定があれば、それを処理器に投入する
+          ;;   - 根に戻る
+          ;;   - ローマ字断片オーバーレイを消す
+          ;;   - 最終の状態で`liskk-kana-insert'を実行する
+          ;;     - 現在の葉の文字列を挿入する
+          ;;     - 葉に次状態の指定があれば、それを処理器に投入する
           (let ((node liskk-current-rule-node))
             (setq-local liskk-current-rule-node nil)
             (ov-set liskk-ov-roman-fragment 'after-string "")
