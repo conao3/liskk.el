@@ -230,7 +230,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 (defvar liskk-abbrev-mode)
 (defvar liskk-internal-modes '(kana ascii abbrev))
 (defvar-local liskk-internal-type 0)
-(defvar liskk-current-rule-node nil)
+(defvar-local liskk-current-rule-node nil)
 (defvar-local liskk-ov-roman-fragment nil)
 
 (defvar liskk-rule-tree nil)
@@ -373,7 +373,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
   ;;  - 現在の状態を根として処理を始める
   ;;  - ローマ字断片オーバーレイを移動させる
   (unless liskk-current-rule-node
-    (setq liskk-current-rule-node liskk-rule-tree)
+    (setq-local liskk-current-rule-node liskk-rule-tree)
     (ov-move liskk-ov-roman-fragment (point) (point)))
 
   ;; 現在の葉から次の状態に遷移しようとする
@@ -383,7 +383,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
         ;;  - 状態を更新する
         ;;  - ローマ字断片オーバーレイの表示を更新する
         ;;  - 次状態遷移可能性を検証する
-        (setq liskk-current-rule-node (assoc key (nth 4 liskk-current-rule-node)))
+        (setq-local liskk-current-rule-node (assoc key (nth 4 liskk-current-rule-node)))
         (ov-set liskk-ov-roman-fragment
                 'after-string
                 (propertize
@@ -399,7 +399,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
           ;;    - 現在の葉の文字列を挿入する
           ;;    - 葉に次状態の指定があれば、それを処理器に投入する
           (let ((node liskk-current-rule-node))
-            (setq liskk-current-rule-node nil)
+            (setq-local liskk-current-rule-node nil)
             (ov-set liskk-ov-roman-fragment 'after-string "")
             (liskk-kana-insert node))))
 
@@ -411,7 +411,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
       ;;     - 現在の葉の文字列を挿入する
       ;;     - 葉に次状態の指定があれば、それを処理器に投入する
       ;;   - 入力されたキーを、次のローマ字列として処理器に投入する
-      (setq liskk-current-rule-node nil)
+      (setq-local liskk-current-rule-node nil)
       (ov-set liskk-ov-roman-fragment 'after-string "")
       (liskk-kana-insert node)
       (liskk-kana-input key)))
@@ -525,7 +525,7 @@ Treeは次の形式である:
                     (unless liskk-mode
                       (liskk-mode +1) (,sym +1))
                     ;; renew roman-kana conversion state
-                    (setq liskk-current-rule-node nil)
+                    (setq-local liskk-current-rule-node nil)
                     ,@(mapcar
                        (lambda (el)
                          `(,(intern (format "liskk-%s-mode" (symbol-name el))) -1))
