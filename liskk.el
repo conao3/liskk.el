@@ -218,7 +218,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 ;;  Implemention
 ;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  Declare symbols
 ;;
@@ -260,7 +260,8 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
     keymap)
   "Keymap for `liskk-abbrev-mode'.")
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  liskk main routine
 ;;
@@ -280,6 +281,11 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
           (liskk-kana-input key))
          (liskk-ascii-mode)
          (liskk-abbrev-mode))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  liskk kana mode
+;;
 
 (defun liskk-kana-insert (node)
   "Insert kana."
@@ -424,7 +430,8 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
                       (truncate-string-to-width
                        (prin1-to-string liskk-current-rule-node) 60))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  Roman-kana rule
 ;;
@@ -475,7 +482,7 @@ Treeは次の形式である:
                           (liskk-alist-get method liskk-rule-roman-kana-alist))))
   liskk-rule-tree)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  Dictionary
 ;;
