@@ -380,7 +380,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
   ;;  - ローマ字断片オーバーレイを移動させる
   (unless liskk-current-rule-node
     (setq-local liskk-current-rule-node liskk-rule-tree)
-    (ov-move liskk-ov-roman-fragment (point) (point)))
+    (liskk-ov-move-here liskk-ov-roman-fragment (point)))
 
   ;; 現在の葉から次の状態に遷移しようとする
   (if (assoc key (nth 4 liskk-current-rule-node))
@@ -555,7 +555,7 @@ Treeは次の形式である:
       (progn
         (eval `(,(intern (format "liskk-kana-mode")) +1))
         (setq-local liskk-internal-type 0)
-        (setq-local liskk-ov-roman-fragment (ov (point) (point))))
+        (setq-local liskk-ov-roman-fragment (liskk-ov-here (point))))
     (eval
      `(progn
         ,@(mapcar

@@ -57,5 +57,29 @@
 ;;  General overlay functions
 ;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Make ov here functions
+;;
+
+(defun liskk-ov-here (point &rest properties)
+  "Make an overlay on POINT with PROPERTIES.  see `ov'."
+  (apply #'ov `(,point ,point ,@properties)))
+
+(defalias 'liskk-ov-create-here 'liskk-ov-make-here)
+(defun liskk-ov-make-here (point &optional buffer)
+  "Create a new overlay at POINT in BUFFER and return it.  see `ov-make'."
+  (apply #'ov-make `(,point ,point ,buffer)))
+
+(defun liskk-ov-move-here (ov point &optional buffer shrink)
+  "Set the endpoints of OV to POINTin BUFFER.  see `ov-move'.
+If SHRINK is non-nil, OV will shrink 0 width."
+  (apply #'ov-move
+         `(,ov ,point ,(if shrink point (+ point (ov-length ov))) ,buffer)))
+
+(defun liskk-ov-clear-here (point)
+  "Clear overlays on POINT.  see `ov-clear'."
+  (apply #'ov-clear `(,point ,point)))
+
 (provide 'liskk-polyfill)
 ;;; liskk-polyfill.el ends here
