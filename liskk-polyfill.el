@@ -26,6 +26,8 @@
 
 ;;; Code:
 
+(require 'ov)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -48,6 +50,12 @@
 ;;
 
 (defalias 'liskk-alist-get 'alist-get)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  General overlay functions
+;;
 
 (provide 'liskk-polyfill)
 ;;; liskk-polyfill.el ends here

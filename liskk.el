@@ -31,7 +31,6 @@
 
 (require 'liskk-polyfill)
 (require 'liskk-rule)
-(require 'ov)
 
 (defgroup liskk nil
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
