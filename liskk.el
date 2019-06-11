@@ -390,12 +390,10 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
         ;;   - ローマ字断片オーバーレイの表示を更新する
         ;;   - 次状態遷移可能性を検証する
         (setq-local liskk-current-rule-node (assoc key (nth 4 liskk-current-rule-node)))
-        (ov-set liskk-ov-roman-fragment
-                'after-string
-                (propertize
-                 (concat
-                  (ov-val liskk-ov-roman-fragment 'after-string) (char-to-string key))
-                 'face 'font-lock-warning-face))
+        (liskk-ov-aset (it liskk-ov-roman-fragment) 'after-string
+          (propertize
+           (format "%s%c" (substring-no-properties it) key)
+           'face 'font-lock-warning-face))
 
         (unless (nth 4 liskk-current-rule-node)
           ;; 遷移できたが、次の状態がない

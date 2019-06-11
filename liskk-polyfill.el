@@ -81,5 +81,21 @@ If SHRINK is non-nil, OV will shrink 0 width."
   "Clear overlays on POINT.  see `ov-clear'."
   (apply #'ov-clear `(,point ,point)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  Anaphoric ov macros
+;;
+
+(defmacro liskk-ov-aset (sym property new)
+  "Update PROPERTY of OV as NEW using ASYM which contains currernt value.
+
+\(fn (ASYM OV) PROPERTY NEW)"
+  (declare (indent 2))
+  (let ((asym (car sym))
+        (ov   (cadr sym)))
+    `(let ((,asym (ov-val ,ov ,property)))
+       (ov-set ,ov ,property ,new)
+       ,ov)))
+
 (provide 'liskk-polyfill)
 ;;; liskk-polyfill.el ends here
