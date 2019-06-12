@@ -57,6 +57,43 @@
 ;;  General overlay functions
 ;;
 
+(defun liskk-ov-discard (ov-or-ovs-or-regexp &rest properties)
+  "Discard overlay PROPERTIES.
+OV-OR-OVS-OR-REGEXP can be an overlay, overlays or a regexp."
+  (when ov-or-ovs-or-regexp
+    (unless (and ov-or-ovs-or-regexp properties)
+      (error "Arguments are OV and PROPERTIES"))
+    (when (listp (car-safe properties))
+      (setq properties (car properties)))
+    (let (return-type)
+      (cond ((stringp ov-or-ovs-or-regexp)
+             (setq ov-or-ovs-or-regexp (ov-regexp ov-or-ovs-or-regexp))
+             (setq return-type 'ov-list))
+            ((ov-p ov-or-ovs-or-regexp)
+             (setq ov-or-ovs-or-regexp (cons ov-or-ovs-or-regexp nil))
+             (setq return-type 'ov))
+            ((listp ov-or-ovs-or-regexp)
+             (setq return-type 'ov-list)))
+      (mapc (lambda (ov)
+              (delete-overlay ov)
+              (ov-set ov
+                      (let ((val (cddr (ov-prop ov)))
+                            target frg ret)
+                        (while val
+                          (setq target (pop val))
+                          (cond
+                           ((memq target properties)
+                            (setq frg t))
+                           (frg
+                            (setq frg nil))
+                           (t
+                            (setq ret (cons target ret)))))
+                        (nreverse ret))))
+            ov-or-ovs-or-regexp)
+      (if (eq 'ov return-type)
+          (car ov-or-ovs-or-regexp)
+        ov-or-ovs-or-regexp))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  Make ov here functions
