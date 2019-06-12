@@ -404,8 +404,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
           ;;     - 葉に次状態の指定があれば、それを処理器に投入する
           (let ((node liskk-current-rule-node))
             (setq-local liskk-current-rule-node nil)
-            (setq liskk-ov-roman-fragment
-                  (liskk-ov-discard liskk-ov-roman-fragment 'after-string))
+            (liskk-ov-discard liskk-ov-roman-fragment 'after-string)
             (liskk-kana-insert node))))
 
     (let ((node liskk-current-rule-node))
@@ -417,8 +416,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
       ;;     - 葉に次状態の指定があれば、それを処理器に投入する
       ;;   - 入力されたキーを、次のローマ字列として処理器に投入する
       (setq-local liskk-current-rule-node nil)
-      (setq liskk-ov-roman-fragment
-            (liskk-ov-discard liskk-ov-roman-fragment 'after-string))
+      (liskk-ov-discard liskk-ov-roman-fragment 'after-string)
       (liskk-kana-insert node)
       (liskk-kana-input key)))
 
@@ -537,8 +535,7 @@ Treeは次の形式である:
                        (remove elm liskk-internal-modes)))
                 ;; discard roman-kana conversion state
                 (setq-local liskk-current-rule-node nil)
-                (setq liskk-ov-roman-fragment
-                      (liskk-ov-discard liskk-ov-roman-fragment 'after-string))))))
+                (liskk-ov-discard liskk-ov-roman-fragment 'after-string)))))
        liskk-internal-modes)))
 
 (define-minor-mode liskk-mode
