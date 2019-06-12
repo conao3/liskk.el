@@ -74,22 +74,10 @@ OV-OR-OVS-OR-REGEXP can be an overlay, overlays or a regexp."
              (setq return-type 'ov))
             ((listp ov-or-ovs-or-regexp)
              (setq return-type 'ov-list)))
-      (mapc (lambda (ov)
-              (delete-overlay ov)
-              (ov-set ov
-                      (let ((val (cddr (ov-prop ov)))
-                            target frg ret)
-                        (while val
-                          (setq target (pop val))
-                          (cond
-                           ((memq target properties)
-                            (setq frg t))
-                           (frg
-                            (setq frg nil))
-                           (t
-                            (setq ret (cons target ret)))))
-                        (nreverse ret))))
-            ov-or-ovs-or-regexp)
+      (mapc
+       (lambda (ov)
+         (mapc (lambda (prop) (ov-set ov prop nil)) properties))
+       ov-or-ovs-or-regexp)
       (if (eq 'ov return-type)
           (car ov-or-ovs-or-regexp)
         ov-or-ovs-or-regexp))))
