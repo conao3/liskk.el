@@ -392,7 +392,7 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
         (setq-local liskk-current-rule-node (assoc key (nth 4 liskk-current-rule-node)))
         (liskk-ov-aset (it liskk-ov-roman-fragment) 'after-string
           (propertize
-           (format "%s%c" (substring-no-properties it) key)
+           (format "%s%c" (substring-no-properties (or it "")) key)
            'face 'font-lock-warning-face))
 
         (unless (nth 4 liskk-current-rule-node)
