@@ -414,11 +414,12 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
       ;;   - 最終の状態で`liskk-kana-insert'を実行する
       ;;     - 現在の葉の文字列を挿入する
       ;;     - 葉に次状態の指定があれば、それを処理器に投入する
-      ;;   - 入力されたキーを、次のローマ字列として処理器に投入する
+      ;;   - 入力されたキーを、遷移の可能性がある場合、次のローマ字列として処理器に投入する
       (setq-local liskk-current-rule-node nil)
       (liskk-ov-discard liskk-ov-roman-fragment 'after-string)
       (liskk-kana-insert node)
-      (liskk-kana-input key)))
+      (when (assoc key (nth 4 liskk-rule-tree))
+        (liskk-kana-input key))))
 
   (when liskk-debug-mode
     (with-current-buffer (get-buffer-create liskk-debug-buffer-name)
