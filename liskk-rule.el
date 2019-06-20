@@ -94,6 +94,12 @@ TREEは次の形式である:
      `(,(concat elm elm) ,elm "っ"))
    lst))
 
+(defun liskk-rule-same-char-make (lst)
+  (mapcar
+   (lambda (elm)
+     `(,elm nil ,elm))
+   lst))
+
 (defconst liskk-rule-roman-kana-base
   `(,@(liskk-rule-roman-make
        '(""     ("あ"   "い"   "う"   "え"   "お")
@@ -171,12 +177,15 @@ TREEは次の形式である:
     ("zL" nil "⇒")
 
     ;; others
-    ("." nil liskk-auto-kutouten)
-    ("," nil liskk-auto-kutouten)
-    ("-" nil liskk-auto-kutouten)
-    (":" nil "：")
-    (";" nil "；")
-    ("?" nil "？")
+    ,@(liskk-rule-same-char-make
+       '("`" "1" "2" "3" "4" "5" "6" "7" "8" "9" "0" "-" "="
+         "~" "!"     "#" "$" "%" "^" "&" "*" "(" ")" "_" "+" ; shift
+         "\\"
+         "{" "}" "|"                    ; shift
+         ";" "\""
+         ":" "'"                        ; shift
+         "," "."
+         "<" ">" "?"))                  ; shift
     ("[" nil "「")
     ("]" nil "」")
     ("l" nil liskk-latin-mode)
@@ -185,7 +194,6 @@ TREEは次の形式である:
     ("Q" nil liskk-set-henkan-point-subr)
     ("X" nil liskk-purge-from-jisyo)
     ("/" nil liskk-abbrev-mode)
-    ("$" nil liskk-display-code-for-char-at-point)
     ("@" nil liskk-today)
     ("\\" nil liskk-input-by-code-or-menu)))
 
