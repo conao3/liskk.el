@@ -515,30 +515,6 @@ Treeは次の形式である:
 ;;  Minor-mode
 ;;
 
-(eval
- `(progn
-    ,@(mapcar
-       (lambda (elm)
-         (let ((sym (intern (format "liskk-%s-mode" (symbol-name elm)))))
-           `(define-minor-mode ,sym
-              ,(format "Internal minor-mode for `liskk-mode' to insert %s." (symbol-name elm))
-              :require 'liskk
-              :lighter nil
-              :group 'liskk
-              :keymap ,(intern (format "liskk-%s-mode-map" (symbol-name elm)))
-              (if ,sym
-                  (progn
-                    (unless liskk-mode
-                      (liskk-mode +1) (,sym +1))
-                    ,@(mapcar
-                       (lambda (el)
-                         `(,(intern (format "liskk-%s-mode" (symbol-name el))) -1))
-                       (remove elm liskk-internal-modes)))
-                ;; discard roman-kana conversion state
-                (setq-local liskk-current-rule-node nil)
-                (liskk-ov-discard liskk-ov-roman-fragment 'after-string)))))
-       liskk-internal-modes)))
-
 (define-minor-mode liskk-mode
   "Yet another ddskk (Daredevil Simple Kana to Kanji conversion)."
   :require 'liskk
@@ -561,6 +537,44 @@ Treeは次の形式である:
            (lambda (elm)
              `(,(intern (format "liskk-%s-mode" (symbol-name elm))) -1))
            liskk-internal-modes)))))
+
+(eval
+ `(progn
+    ,@(mapcan
+       (lambda (elm)
+         (let ((sym (intern (format "liskk-%s-mode" (symbol-name elm)))))
+           `((defvar ,sym nil
+               ,(format "Non-nil if %s is enabled.
+Use the command to change this variable." (symbol-name sym)))
+             (defun ,sym (&optional arg)
+               ,(format "Internal mode for `liskk-mode' to insert %s." (symbol-name elm))
+               (setq ,sym
+                     (if (eq arg 'toggle)
+                         (not liskk-kana-mode)
+                       (< 0 (prefix-numeric-value arg))))
+               (if ,sym
+                   (progn
+                     (unless liskk-mode
+                       (liskk-mode 1) (,sym +1))
+                     ,@(mapcar
+                        (lambda (el)
+                          `(,(intern (format "liskk-%s-mode" (symbol-name el))) -1))
+                        (remove elm liskk-internal-modes)))
+                 (setq-local liskk-current-rule-node nil)
+                 (liskk-ov-discard liskk-ov-roman-fragment 'after-string))
+               (run-hooks 'liskk-kana-mode-hook
+                          (if liskk-kana-mode 'liskk-kana-mode-on-hook 'liskk-kana-mode-off-hook))
+               liskk-kana-mode)
+
+             (defvar ,(intern (format "liskk-%s-mode-hook" (symbol-name elm))) nil
+               ,(format "Hook run after entering or leaving `%s'.
+No problems result if this variable is not bound.
+`add-hook' automatically binds it.  (This is true for all hook variables.)"
+                        (symbol-name sym)))
+             (with-no-warnings
+               (add-minor-mode
+                ',sym 'nil ,(intern (format "liskk-%s-mode-map" (symbol-name elm))))))))
+       liskk-internal-modes)))
 
 (provide 'liskk)
 ;;; liskk.el ends here
