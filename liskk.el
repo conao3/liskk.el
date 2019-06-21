@@ -345,17 +345,17 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
 
 内部形式では次のように表現されます。簡便のために引用符を省略します
 
-(let ((liskk-rule-tree '(nil nil nil nil nil)))
-      (mapc
-       (lambda (elm)
-         (liskk-compile-rule-tree-add liskk-rule-tree (car elm) elm))
-       (reverse '((a nil あ)
-                  (n nil ん)
-                  (nn nil ん)
-                  (na nil な)
-                  (ta nil た)
-                  (tt t っ))))
-      liskk-rule-tree)
+  (let ((liskk-rule-tree '(nil nil nil nil nil)))
+        (mapc
+         (lambda (elm)
+           (liskk-compile-rule-tree-add liskk-rule-tree (car elm) elm))
+         (reverse '((a nil あ)
+                    (n nil ん)
+                    (nn nil ん)
+                    (na nil な)
+                    (ta nil た)
+                    (tt t っ))))
+        liskk-rule-tree)
 ;; => (nil nil nil nil
 ;;         ((97 a nil あ nil)
 ;;          (110 n nil ん
@@ -387,7 +387,9 @@ Date: Wed, 10 Jun 1998 19:06:11 +0900 (JST)
   ;;   - ローマ字断片オーバーレイを移動させる
   (unless liskk-current-rule-node
     (setq-local liskk-current-rule-node liskk-rule-tree)
-    (liskk-ov-move-here liskk-ov-roman-fragment (point)))
+    (if liskk-ov-roman-fragment
+        (liskk-ov-move-here liskk-ov-roman-fragment (point))
+      (setq-local liskk-ov-roman-fragment (liskk-ov-here (point)))))
 
   ;; 現在の葉から次の状態に遷移しようとする
   (if (assoc key (nth 4 liskk-current-rule-node))
@@ -536,8 +538,7 @@ Treeは次の形式である:
   (if liskk-mode
       (progn
         (eval `(,(intern (format "liskk-kana-mode")) +1))
-        (setq-local liskk-internal-type 0)
-        (setq-local liskk-ov-roman-fragment (liskk-ov-here (point))))
+        (setq-local liskk-internal-type 0))
     (eval
      `(progn
         ,@(mapcar
