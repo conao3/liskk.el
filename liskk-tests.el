@@ -45,7 +45,8 @@
   :lighter " liskk-debug"
   :group 'liskk
   :keymap `((,(kbd "M-<f12>") . liskk-debug-clean))
-  (or liskk-mode (liskk-mode +1)))
+  (if liskk-debug-mode
+      (or liskk-mode (liskk-mode +1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
