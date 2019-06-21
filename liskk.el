@@ -227,7 +227,7 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
 (defvar liskk-kana-mode)
 (defvar liskk-ascii-mode)
 (defvar liskk-abbrev-mode)
-(defvar liskk-internal-modes '(kana ascii abbrev))
+(defvar liskk-internal-modes '(kana ascii abbrev debug))
 (defvar-local liskk-internal-type 0)
 (defvar-local liskk-current-rule-node nil)
 (defvar-local liskk-ov-roman-fragment nil)
@@ -258,6 +258,13 @@ LISKK は起動時にこの 2 変数を編集して `liskk-rule-tree' を作成�
       (define-key keymap (char-to-string (+ 32 i)) #'liskk-self-insert))
     keymap)
   "Keymap for `liskk-abbrev-mode'.")
+
+(defvar liskk-debug-mode-map
+  (let ((keymap (make-sparse-keymap)))
+    (dotimes (i 95)
+      (define-key keymap (char-to-string (+ 32 i)) #'liskk-self-insert))
+    keymap)
+  "Keymap for `liskk-debug-mode'.")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
