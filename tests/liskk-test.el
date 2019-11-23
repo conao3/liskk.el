@@ -53,6 +53,10 @@
 ;;  Test definition
 ;;
 
+(describe "A suite"
+  (it "contains a spec with an expectation"
+      (expect t :to-be t)))
+
 ;; (cort-deftest liskk/layout-make
 ;;   '((:equal
 ;;      (liskk-rule-layout-make
