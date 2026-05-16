@@ -7,7 +7,7 @@
 ;; Keywords: lisp settings
 ;; Version: 0.1.0
 ;; URL: https://github.com/conao3/liskk.el
-;; Package-Requires: ((emacs "24.4") (ov "1.0.6"))
+;; Package-Requires: ((emacs "25.1") (ov "1.0.6"))
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the Affero GNU General Public License as

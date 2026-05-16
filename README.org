@@ -23,7 +23,7 @@ A lightweight Japanese input method for Emacs, inspired by [[https://github.com/
 
 ** Requirements
 
-- Emacs 24.4 or later
+- Emacs 25.1 or later
 - [[https://github.com/emacsorphanage/ov][ov.el]] (overlay library)
 
 * Installation
